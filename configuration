@@ -1,0 +1,9 @@
+Listen 8100
+
+<VirtualHost *:8100>
+DocumentRoot "${HOME}/camagru"
+ <Directory "${HOME}/camagru">
+ Options Indexes FollowSymLinks
+ Require all granted
+</Directory>
+</VirtualHost>
