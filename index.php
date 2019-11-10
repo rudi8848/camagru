@@ -1,19 +1,29 @@
 <?php
 //phpinfo();
-echo 'camagru'.PHP_EOL;
+echo '<h1>camagru</h1>';
 
 try {
 
 	require_once('config/setup.php');
+	$db->exec($q);
+	$query = 'show tables;';
+	$ret = $db->query($query);
 
-
-	//$query = 'select version() as version';
-$query = 'show tables';
-	$ver = $db->query($query);
-
-	$version = $ver->fetch();
-
-	echo $version['version'];
+	echo '<ol>';
+	while($table = $ret->fetch()){
+		echo '<li>'.$table['Tables_in_testcam'];
+		$subq = 'show columns from '.$table['Tables_in_testcam'];
+		echo '<ul>';
+		$columns = $db->query($subq);
+		$col = $columns->fetchAll();
+		foreach($col as $c) {
+			echo '<li>'.$c['Field'].'</li>';
+		}
+		
+		echo '</ul>';
+		echo '</li>';
+	}
+	echo '</ol>';
 }
 catch(Exception $e)
 {
