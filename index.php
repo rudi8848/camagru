@@ -1,14 +1,14 @@
 <?php
 //phpinfo();
-echo 'camagru';
+echo 'camagru'.PHP_EOL;
 
 try {
 
 	require_once('config/setup.php');
 
 
-	$query = 'select version() as version';
-
+	//$query = 'select version() as version';
+$query = 'show tables';
 	$ver = $db->query($query);
 
 	$version = $ver->fetch();
