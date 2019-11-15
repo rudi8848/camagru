@@ -23,7 +23,10 @@ class Router
 		foreach ($this->routes as $uriPattern => $path) {
 // нужно заменить - ловит лишнее			
 			if (preg_match("~$uriPattern~", $uri)) {
-					$segments = explode('/', $path);
+
+					$internalRoute = preg_replace("~$uriPattern~", $path, $uri);
+					
+					$segments = explode('/', $internalRoute);
 
 					$controllerName = array_shift($segments).'Controller';
 					$controllerName = ucfirst($controllerName);
@@ -31,7 +34,8 @@ class Router
 
 					$actionName = 'action'.ucfirst(array_shift($segments));
 
-				
+					$parameters = $segments;
+
 
 				// подключить файл класса-контроллера
 				$controllerFile = ROOT.'/controllers/'.$controllerName.'.php';// add try catch
@@ -41,7 +45,8 @@ class Router
 
 				// создать объект, вызвать метод (экшн)
 				$controllerObject = new $controllerName;
-				$result = $controllerObject->$actionName();
+				//$result = $controllerObject->$actionName($parameters);
+				$result = call_user_func_array([$controllerObject, $actionName], $parameters);// так параметры передаются как отдельные переменные, а не как массив
 				if ($result != null){
 					break;
 				}
