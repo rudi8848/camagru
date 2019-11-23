@@ -1,6 +1,6 @@
 <?php
 
-require_once('config/setup');
+require_once('config/setup.php');
 require_once('.env.php');
 //FRONT CONTROLLER
 
@@ -15,7 +15,7 @@ require_once(ROOT.'/components/Router.php');
 
 
 //	3. установка соединения с БД
-
+require_once(ROOT.'/DB.php');
 
 
 //	4. вызов роутера
