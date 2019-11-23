@@ -1,4 +1,7 @@
 <?php
+
+require_once('config/setup');
+require_once('.env.php');
 //FRONT CONTROLLER
 
 // 1. общие настройки
