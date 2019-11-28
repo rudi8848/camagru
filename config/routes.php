@@ -9,10 +9,10 @@ return [
 
     /*  profile controller  */
     'profile/([0-9])' => 'profile/user/$1',
-    'profile/settings/' => 'profile/settings',  // id from session
+    'settings' => 'profile/settings',  // id from session
 
     /*  login controller    */
-	'login' => 'login/signin',		// actionSignIn in LoginController
+	'login' => 'login/login',		// actionSignIn in LoginController
     'logout' => 'login/logout',
     'signup' => 'login/signup',
 
