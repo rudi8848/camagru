@@ -1,5 +1,5 @@
 <?php
-
+try {
 require_once('config/setup.php');
 require_once('.env.php');
 //FRONT CONTROLLER
@@ -15,7 +15,10 @@ require_once(ROOT . '/components/Autoload.php');
 
 $router = new Router();
 $router->run();
-
+}
+catch (Exception $e) {
+  die ($e->getMessage());
+}
 
 
 /*

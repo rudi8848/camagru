@@ -11,8 +11,12 @@ class DB
 		$password = getenv('DB_PASSWORD');
 
 		$dsn = "mysql:host=$host;dbname=$dbname";
-		$db = new PDO($dsn, $user, $password);
 
-		return $db;
+		//try {
+			$db = new PDO($dsn, $user, $password);
+			return $db;
+		//}
+		//catch()
+
 	}
 }
