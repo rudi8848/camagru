@@ -1,6 +1,5 @@
 <?php
 
-
 class ProfileController
 {
     public function actionUser()
