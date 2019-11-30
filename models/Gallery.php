@@ -2,7 +2,7 @@
 
 class Gallery
 {
-	
+
 	public static function getPictureById($id)
 	{
 		# code...
@@ -16,19 +16,15 @@ class Gallery
 		$user = 'root';
 		$password = '';
 
-		$db = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
+		$db = DB::getConnection();
 
 		$picturesList = [];
 
-		$result = $db->query('SELECT id, title, date, content
-			FROM posts ORDER BY date DESC LIMIT 10');
+		$result = $db->query('SELECT *
+			FROM posts ORDER BY created_at DESC LIMIT 10');
 
-		while($row = $result->fetch()) {
-			$picturesList[$i]['id'] = $row['id'];
-			$picturesList[$i]['title'] = $row['title'];
-			$picturesList[$i]['date'] = $row['date'];
-			$picturesList[$i]['content'] = $row['content'];
-			$i++;
+		while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+			$picturesList [] = $row;
 		}
 
 		return $picturesList;

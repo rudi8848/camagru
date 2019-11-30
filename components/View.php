@@ -2,20 +2,13 @@
 
 class View
 {
-    private $path;
-    private $data;
 
-    public function __construct(string $path, array $output)
+    public function render($path, $data)
     {
-        $this->path = ROOT.'/views/'.$path;
-        $this->data = $output;
-    }
-
-    public function render()
-    {
-        if (file_exists($this->path))
+      $path = ROOT.'/views/'.$path;
+        if (file_exists($path))
         {
-            require_once($this->path);
+            require_once($path);
         } else
         {
             die('File '.$this->path.' does not exist');

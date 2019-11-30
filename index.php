@@ -10,7 +10,7 @@ error_reporting(E_ALL);
 
 
 define('ROOT', dirname(__FILE__));
-
+session_start();
 require_once(ROOT . '/components/Autoload.php');
 
 $router = new Router();
@@ -41,7 +41,7 @@ try {
 		foreach($col as $c) {
 			echo '<li>'.$c['Field'].'</li>';
 		}
-		
+
 		echo '</ul>';
 		echo '</li>';
 	}
