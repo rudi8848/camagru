@@ -48,7 +48,7 @@ class Router
                     //$result = $controllerObject->$actionName($parameters);
                     $result = call_user_func_array([$controllerObject, $actionName], $parameters);// так параметры передаются как отдельные переменные, а не как массив
                     if ($result != null){
-                        break;
+                        exit;
                     }
 				}
 			}
