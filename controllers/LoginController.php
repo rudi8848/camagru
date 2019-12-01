@@ -6,6 +6,7 @@ class LoginController
     {
         $data = [];
 
+        Profile::login();
         $view = new View();
         $view->render('login.php', $data);
         return true;
@@ -17,7 +18,7 @@ class LoginController
           $_SESSION['user']['id'],
           $_SESSION['user']['name'],
         );
-        GalleryController::actionList();
+
         return true;
     }
 

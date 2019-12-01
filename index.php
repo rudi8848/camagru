@@ -2,9 +2,9 @@
 try {
 require_once('config/setup.php');
 require_once('.env.php');
-//FRONT CONTROLLER
 
-// 1. общие настройки
+//phpinfo();
+
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 

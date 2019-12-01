@@ -8,6 +8,7 @@
 <div class="header">
   <ul class="main-menu">
 
+      <li><a href="/gallery">Gallery</a></li>
     <?php if (empty($_SESSION['user']['id'])) : ?>
       <li><a href="/login">Login</a></li>
       <li><a href="/signup">Sign Up</a></li>

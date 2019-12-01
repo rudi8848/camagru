@@ -10,7 +10,7 @@ class Profile
   {
 
       $db = DB::getConnection();
-      $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
       $users = $db->query('SELECT * FROM users WHERE username = "'.'$name'.'" LIMIT 1');
 
       try {
@@ -33,6 +33,45 @@ class Profile
           echo $e->getMessage();
       }
 
+  }
+
+  public static function login()
+  {
+    if (!empty($_POST)) {
+
+      $name = strip_tags($_POST['login']);
+      $password = md5($_POST['password']);
+      $email = $_POST['email'];
+
+      $db = DB::getConnection();
+      $q = 'SELECT * FROM users WHERE username="'.$name.'"';
+      $res = $db->query($q, PDO::FETCH_ASSOC);
+
+      $users = $res->fetchAll();
+      $user = $users[0];
+
+      if ($user['password'] !== $password) {
+
+        die ('Wrong password');
+
+      } else {
+
+        mail(
+            $email,
+            'Camagru registration',
+            'Hello! Nice to see you!',
+            join("\r\n", [
+              "From: webmaster@$SERVER_NAME",
+              "Reply-To: webmaster@$SERVER_NAME",
+              "X-Mailer: PHP/".phpversion()
+            ])
+          );
+
+        $_SESSION['user']['id'] = $user['user_id'];
+        $_SESSION['user']['name'] = $user['username'];
+      }
+
+    }
   }
 
 }

@@ -14,6 +14,7 @@ class DB
 
 		//try {
 			$db = new PDO($dsn, $user, $password);
+			$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			return $db;
 		//}
 		//catch()
