@@ -6,6 +6,9 @@ class ShotController
     public function actionNew()
     {
       $data = [];
+      if (empty($_SESSION['user']['id'])) {
+          die('Please login');
+      }
       if (!empty($_FILES['image'])) {
 
         $shot = new Shot($_FILES['image']);

@@ -16,7 +16,7 @@ class LoginController
     {
         unset(
           $_SESSION['user']['id'],
-          $_SESSION['user']['name'],
+          $_SESSION['user']['name']
         );
 
         return true;

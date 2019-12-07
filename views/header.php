@@ -13,9 +13,10 @@
       <li><a href="/login">Login</a></li>
       <li><a href="/signup">Sign Up</a></li>
     <?php else : ?>
-      <p class="username">Hello, <?=$_SESSION['user']['name']?></p>
+
       <li><a href="/settings">Settings</a></li>
       <li><a href="/logout">Logout</a></li>
+      <p class="username">Hello, <?=$_SESSION['user']['name']?></p>
     <?php endif; ?>
 
   </ul>

@@ -118,9 +118,10 @@ try {
 		`content` VARCHAR(255) NOT NULL,
 		`sent_at` DATETIME DEFAULT NOW())
 		ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
+	
 ";
 
+	$db->exec($q);
 
 	} 
 	catch (PDOException $e) {

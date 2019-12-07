@@ -23,9 +23,20 @@ class Profile
           $newUser->execute(['username' => $name, 'email' => $email, 'password' => $password]);
 
           $userId = $db->lastInsertId();
-          echo 'Your id is '.$userId;
+//          echo 'Your id is '.$userId;
           $_SESSION['user']['id'] = $userId;
           $_SESSION['user']['name'] = $name;
+
+          mail(
+            $email,
+            'Camagru registration',
+            'Hello! Nice to see you!',
+            join("\r\n", [
+              "From: webmaster@camagru",
+              "Reply-To: webmaster@camagru",
+              "X-Mailer: PHP/".phpversion()
+            ])
+          );
         }
 
 
@@ -41,7 +52,7 @@ class Profile
 
       $name = strip_tags($_POST['login']);
       $password = md5($_POST['password']);
-      $email = $_POST['email'];
+
 
       $db = DB::getConnection();
       $q = 'SELECT * FROM users WHERE username="'.$name.'"';
@@ -56,16 +67,7 @@ class Profile
 
       } else {
 
-        mail(
-            $email,
-            'Camagru registration',
-            'Hello! Nice to see you!',
-            join("\r\n", [
-              "From: webmaster@$SERVER_NAME",
-              "Reply-To: webmaster@$SERVER_NAME",
-              "X-Mailer: PHP/".phpversion()
-            ])
-          );
+
 
         $_SESSION['user']['id'] = $user['user_id'];
         $_SESSION['user']['name'] = $user['username'];

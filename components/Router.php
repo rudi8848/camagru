@@ -15,11 +15,9 @@ class Router
 
 	public function run()
 	{
-		// получить строку запроса
+
 		$uri = $this->getURI();
 
-		// проверить наличие такого запроса в routes.php
-		// если есть совпадение - определить контроллер и экшн
 		foreach ($this->routes as $uriPattern => $path) {
 // нужно заменить - ловит лишнее			
 			if (preg_match("~$uriPattern~", $uri)) {
