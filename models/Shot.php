@@ -49,7 +49,8 @@ class Shot
 
   private function makeMagic()
   {
-
+//      $im = imagecreatefromstring($this->tmpName);
+//      var_dump($im);
   }
 
   private function saveToDatabase()
