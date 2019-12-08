@@ -6,10 +6,11 @@ class GalleryController
 	public function actionList()
 	{
 		$data = [];
-		$picturesList = [];
+
 		$picturesList = Gallery::getPicturesList();
 
 		$data['posts'] = $picturesList;
+		$data['title'] = 'Gallery';
 		$view = new View();
 		$view->render('index.php', $data);
 

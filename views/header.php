@@ -1,23 +1,26 @@
-<style>
-  .header {
-    min-height: 100px;
-    background-color: gray;
-  }
-</style>
+<!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <link href="/views/styles/main.css" rel="stylesheet">
+            <title><?=$data['title']?></title>
+        </head>
+        <body>
+            <header>
+              <nav class="main-menu">
 
-<div class="header">
-  <ul class="main-menu">
+                  <a href="/gallery">Gallery</a>
+                <?php if (empty($_SESSION['user']['id'])) : ?>
+                  <a href="/login">Login</a>
+                  <a href="/signup">Sign Up</a>
+                <?php else : ?>
 
-      <li><a href="/gallery">Gallery</a></li>
-    <?php if (empty($_SESSION['user']['id'])) : ?>
-      <li><a href="/login">Login</a></li>
-      <li><a href="/signup">Sign Up</a></li>
-    <?php else : ?>
+                  <a href="/settings">Settings</a>
+                  <a href="/logout">Logout</a>
 
-      <li><a href="/settings">Settings</a></li>
-      <li><a href="/logout">Logout</a></li>
-      <p class="username">Hello, <?=$_SESSION['user']['name']?></p>
-    <?php endif; ?>
+                    <br/><a id="btn-new" href="/new">Upload new photo</a><br/>
+                    <p class="username">Hello, <?=$_SESSION['user']['name']?></p>
+                <?php endif; ?>
 
-  </ul>
-</div>
+              </nav>
+            </header>

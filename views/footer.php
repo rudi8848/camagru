@@ -1,10 +1,7 @@
-<style>
-  .footer {
-    min-height: 50px;
-    background-color: gray;
-  }
-</style>
 
-<div class="footer">
+<footer>
   <p>This is footer</p>
-</div>
+</footer>
+
+        </body>
+    </html>
