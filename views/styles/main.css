@@ -17,6 +17,7 @@ footer {
 header, footer {
     background-color: #333333;
     color: #FFFFFF;
+    width: 100%;
 }
 
 .main-menu {
@@ -28,10 +29,10 @@ header, footer {
 }
 
 nav {
-    width: 100px;
+    width: 250px;
     height: 150px;
     float: right;
-    margin-right: 60px;
+
 }
 
 nav a {
@@ -41,9 +42,13 @@ nav a {
     text-align: center;
     padding: 5px;
     border: 1px solid #ffffff ;
-    margin-right: 0;
-    width: 140px;
+    margin: 17px 0;
+    width: 100%;
     display: block;
+}
+
+.gallery-pic {
+    background-image: url("pic/gallery.png");
 }
 
 nav a:hover {
@@ -57,9 +62,36 @@ article {
 
 .username {
     color: #730927;
-
+    font-size: 1.5em;
+    font-weight: bolder;
 }
 
 .gallery {
+    width: auto;
+    box-sizing: border-box;
+}
 
+.logo-img {
+    position: relative;
+    left: 20px;
+    top: 24px;
+    width: 150px;
+}
+
+.logo {
+    position: relative;
+    top: -10px;
+    margin-left: 20px;
+    font-size: 3em;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+.menu-pic {
+    display: inline-block;
+    position: relative;
+    left: -25px;
+    width: 25px;
+    height: 25px;
+    background: url("pic/login.png") no-repeat 0 0;
 }
