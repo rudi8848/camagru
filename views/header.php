@@ -18,9 +18,12 @@
                   <a href="/settings">Settings</a>
                   <a href="/logout">Logout</a>
 
-                    <br/><a id="btn-new" href="/new">Upload new photo</a><br/>
                     <p class="username">Hello, <?=$_SESSION['user']['name']?></p>
                 <?php endif; ?>
 
               </nav>
+
             </header>
+            <?php if (!empty($_SESSION['user']['id'])) :?>
+                <br/><a id="btn-new" href="/new">Upload new photo</a><br/>
+            <?php endif; ?>

@@ -1,11 +1,13 @@
 body {
     font-family: "Lucida Sans", "Lucida Grande", Verdana, Arial, sans-serif;
     line-height: normal;
+    padding: 0;
+    margin: 0;
 }
 
 header {
     height: 200px;
-    padding: 20px;
+
 }
 
 footer {
@@ -19,15 +21,17 @@ header, footer {
 
 .main-menu {
     font-weight: normal;
-    margin-right: 0;
-    margin-left: auto;
-    margin-bottom: 20px;
-
 }
 
 #btn-new {
-    position: relative;
-    top: 100px;
+
+}
+
+nav {
+    width: 100px;
+    height: 150px;
+    float: right;
+    margin-right: 60px;
 }
 
 nav a {
@@ -37,10 +41,13 @@ nav a {
     text-align: center;
     padding: 5px;
     border: 1px solid #ffffff ;
+    margin-right: 0;
+    width: 140px;
+    display: block;
 }
 
 nav a:hover {
-    background-color: #C70039;
+    background-color: #730927;
 }
 
 article {
@@ -49,9 +56,8 @@ article {
 }
 
 .username {
-    color: #C70039;
-    position: relative;
-    left: 80%;
+    color: #730927;
+
 }
 
 .gallery {
