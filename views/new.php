@@ -17,6 +17,7 @@
 
 <?php else: ?>
 
+  <button id="start">Start</button>
   <video id="video" width="240" height="160" autoplay></video>
   <button id="snap">Snap Photo</button>
   <canvas id="canvas" width="240" height="160"></canvas>
@@ -37,45 +38,15 @@
 <?php require_once('footer.php');?>
 <script>
 
-  function hasGetUserMedia() {
-    return (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
-  }
+document.getElementById('start').addEventListener('click',async(e) => {
+    const stream = await navigator.mediaDevices.getUserMedia({video: true})
+    document.getElementById('video').srcObject = stream;
+});
 
-  if (hasGetUserMedia()) {
-    console.log('norm media');
-  } else {
-    alert('getUserMedia is not supported by your browser');
-  }
+ var canvas = document.getElementById('canvas');
+ var context = canvas.getContext('2d');
 
-  var video = document.getElementById('video');
-
-/*
-  if (navigator.getUserMedia) {
-    navigator.getUserMedia({audio: false, video: true}, function(stream){
-      video.src = stream;
-    }, onFailSoHard);
-  } else if (navigator.webkitGetUserMedia) {
-    navigator.webkitGetUserMedia('video', function(stream) {
-      video.src = window.webkitUrl.createObjectUrl(stream);
-    }, onFailSoHard);
-  }
-*/
-
-
-
-  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-
-    navigator.mediaDevices.getUserMedia({video:true}).then(function(stream){
-      video.scrObject = stream;
-      video.play();
-    });
-  } else { console.log('unsupported');}
-
-  var canvas = document.getElementById('canvas');
-  var context = canvas.getContext('2d');
-
-  document.getElementById('snap').addEventListener('click', function() {
+ document.getElementById('snap').addEventListener('click', function() {
     context.drawImage(video, 0, 0, 240, 160);
-  });
-
+    });
 </script>
