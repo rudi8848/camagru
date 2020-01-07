@@ -2,11 +2,18 @@
 
 <form action="/login" method="post">
 
-<p>Login</p>
-<input type="text" name="login">
+
+
+    <?php if (!empty($data['error'])) : ?>
+    <div class="error">
+        <?=$data['error']?>
+    </div>
+    <?php endif; ?>
+
+<input type="text" name="login" value="<?=$data['name']?>" required>
 
 <p>Password</p>
-<input type="password" name="password">
+<input type="password" name="password" required>
 
 <button type="submit">Login</button>
 </form>

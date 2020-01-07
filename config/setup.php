@@ -5,8 +5,10 @@ try {
 
 	$db = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
 	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	$q = "CREATE DATABASE IF NOT EXISTS testcam DEFAULT CHARSET=utf8;
-	USE `testcam`;
+	$dbname = getenv("DB_NAME");
+
+	$q = "CREATE DATABASE IF NOT EXISTS $dbname DEFAULT CHARSET=utf8;
+	USE $dbname;
 	CREATE TABLE IF NOT EXISTS `roles` 
 		(`role_id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, 
 		`role_name` VARCHAR(50) NOT NULL) 

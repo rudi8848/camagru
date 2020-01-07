@@ -6,6 +6,7 @@ class ShotController
     public function actionNew()
     {
       $data = [];
+      $data['title'] = 'New post';
       if (empty($_SESSION['user']['id'])) {
           die('Please login');
       }

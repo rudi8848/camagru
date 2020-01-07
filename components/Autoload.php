@@ -5,6 +5,7 @@ $paths = [
     '/components/',
     '/controllers/'
 ];
+
 spl_autoload_register(function($className) use ($paths) {
     foreach ($paths as $path) {
 

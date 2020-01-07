@@ -1,5 +1,5 @@
 <?php
-	$DB_DSN = 'mysql:dbname=;host=127.0.0.1';
-	$DB_USER = 'root';
-	$DB_PASSWORD = '';
+	$DB_DSN = 'mysql:dbname=;host='.getenv('DB_HOST');
+	$DB_USER = getenv('DB_USER');
+	$DB_PASSWORD = getenv('DB_PASSWORD');
 ?>
