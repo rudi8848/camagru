@@ -45,4 +45,14 @@ class GalleryController
         return true;
     }
 
+    public function actionSetLike()
+    {
+        if (!empty($_POST['json'])){
+
+            $postId = (array)json_decode($_POST['json']);
+            \Gallery::setLike($postId['post']);
+        }
+        return true;
+    }
+
 }

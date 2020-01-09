@@ -39,22 +39,51 @@ class Gallery
 
             $db = DB::getConnection();
 
-
             $ids = implode(',', $postId);
-//            var_dump($ids);exit;
+
             $q = 'SELECT to_post, COUNT(*) FROM likes WHERE to_post in ('.$ids.') GROUP by to_post';
             $res = $db->query($q, PDO::FETCH_ASSOC);
 
             $likes = $res->fetchAll();
-//            print_r($likes);
+
             $response = [];
             foreach ($likes as $k => $v) {
                 $response[$v['to_post']] = $v['COUNT(*)'];
             }
             echo json_encode($response);
-//            print_r($response);
+
         } catch (Exception $e) {
 
+        }
+    }
+
+    public static function setLike(int $postId)
+    {
+        try {
+
+            if (empty($_SESSION['user']['id'])) throw new Exception('Not authorized');
+            $db = DB::getConnection();
+
+            $q = 'SELECT COUNT(*) FROM likes WHERE to_post = "'.$postId.'" AND author = "'.$_SESSION['user']['id'].'"';
+            $result = $db->prepare($q);
+            $result->execute();
+            $likes = $result->fetchColumn();
+
+            if ($likes == '0'){
+                // set like in db
+                $q = 'INSERT INTO likes (to_post, author) VALUES ("'.$postId.'", "'.$_SESSION['user']['id'].'")';
+                $db->exec($q);
+
+                echo json_encode(['inserted' => '1']);
+                exit;
+            } else {
+                throw new Exception('Like is already set');
+
+            }
+
+        } catch (Exception $e) {
+            echo json_encode(['inserted' => '0']);
+            exit;
         }
     }
 

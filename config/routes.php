@@ -7,6 +7,7 @@ return [
 //	'gallery/([a-z]+)/([a-z]+)'	=>	'gallery/sortby/$1/$2',	//	 gallery/user/rudi || gallery/category/cats
 	'gallery' => 'gallery/list',	// actionList in GalleryController	//all list of all users
     'posts/likes' => 'gallery/getPostsLikes',
+    'post/setlike' => 'gallery/setLike',
 
     /*  profile controller  */
     'profile/([0-9])' => 'profile/user/$1',
