@@ -13,7 +13,7 @@ class GalleryController
 		$data['title'] = 'Gallery';
 		$view = new View();
 		$view->render('index.php', $data);
-
+//var_dump($data);exit;
 
 		return true;
 	}

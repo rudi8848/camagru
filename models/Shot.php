@@ -20,7 +20,7 @@ class Shot
     $this->fullpath = ROOT.$this->path;
 
     if (!empty($_POST['description'])) {
-      $this->description = $_POST['description'];
+      $this->description = strip_tags($_POST['description']);
     }
 
 
@@ -66,6 +66,7 @@ class Shot
     $db = DB::getConnection();
     $q = 'INSERT INTO posts (image_path, author, description)
             VALUES ("'.$this->path.'", "'.$_SESSION['user']['id'].'", "'.$this->description.'")';
+
     $db->exec($q);
   }
 

@@ -6,9 +6,10 @@
   AFTER CREATION REDIRECT TO GALLERY/POST/ID
 -->
 <h1>Post creation</h1>
-<a href="/new">Add new post</a><hr>
+<!--<a href="/new">Add new post</a><hr>-->
 
 <div id="error" style="display: none"></div>
+<div id="success" style="display: none"></div>
 
 <?php if (!empty($data['image'])) : ?>
 
@@ -21,12 +22,12 @@
 
   <button id="start">Start</button>
 <div class="video-wrapper">
-  <video id="video" width="500" height="400" autoplay></video>
+  <video id="video" width="240" height="160" autoplay></video>
 </div>
   <button id="snap">Snap Photo</button>
-  <canvas id="canvas"></canvas>
+  <canvas id="canvas">Your browser is not supported</canvas>
 
-
+<!---
   <form action="/new" method="post" enctype="multipart/form-data" id="new-shot">
   <input type="file" name="image" >
   <br/>
@@ -47,6 +48,9 @@
   <input type="text" name="description">
   <button type="submit">Upload</button>
   </form>
+  -->
+<button onclick="submit()">Upload</button>
+
 
 <?php endif ; ?>
 
@@ -55,8 +59,8 @@
 <?php require_once('footer.php');?>
 <script>
 "use strict";
-const WIDTH = 500;
-const HEIGHT = 400;
+const WIDTH = 240;
+const HEIGHT = 160;
 
 
 let video = document.getElementById('video');
@@ -92,7 +96,7 @@ document.getElementById('snap').addEventListener('click', function() {
     });
 
 
-document.getElementById('filterGray').addEventListener('change', function(){
+/*document.getElementById('filterGray').addEventListener('change', function(){
     let width =  video.clientWidth;
 
     let height = video.clientHeight;
@@ -123,6 +127,25 @@ function  draw(video, context, backContext, width, height) {
     }
 
     context.putImageData(idata, 0, 0);
+}*/
+
+async function submit() {
+    let imageBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+
+    let formData = new FormData();
+    formData.append('description', 'lalala');
+    formData.append('image', imageBlob, 'image.png');
+
+    let response = await fetch('/new', {
+        method: 'POST',
+        body: formData
+    });
+
+    let result = await response.json();
+    let resultMessage = document.getElementById('success');
+    resultMessage.innerText = result.result;
+    console.log(result);
+    resultMessage.style.display = 'block';
 }
 
 </script>

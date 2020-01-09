@@ -7,22 +7,27 @@ class ShotController
     {
       $data = [];
       $data['title'] = 'New post';
-      if (empty($_SESSION['user']['id'])) {
-          die('Please login');
+      try {
+          if (empty($_SESSION['user']['id'])) {
+              throw new Exception('Please login');
+          }
+
+          if (!empty($_FILES['image'])) {
+
+              $shot = new Shot($_FILES['image']);
+              $data['image'] = $shot->getImage();
+              echo json_encode(['result' => 'Post added successfully!']);
+              exit;
+          }
+
+      } catch (Exception $e) {
+
+          $data['error'] = $e->getMessage();
+      } finally {
+          $view = new View();
+          $view->render('new.php', $data);
       }
-      if (!empty($_FILES['image'])) {
 
-        $shot = new Shot($_FILES['image']);
-        $data['image'] = $shot->getImage();
-
-        if (!empty($_POST['description']))
-
-          $description = strip_tags($_POST['description']);
-          $data['description'] = $description;
-      }
-
-      $view = new View();
-      $view->render('new.php', $data);
 
       return true;
     }

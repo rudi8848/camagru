@@ -102,3 +102,10 @@ article {
     padding: 10px;
     background-color: rgba(255, 0, 0, .2);
 }
+
+#success, .success {
+    border: 1px dotted #00ff00;
+    font-size: 1.5em;
+    padding: 10px;
+    background-color: rgba(0, 255, 0, .2);
+}

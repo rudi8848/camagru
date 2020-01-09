@@ -85,4 +85,21 @@ class Profile
     return false;
   }
 
+  public static function getProfile(int $id)
+  {
+      $db = DB::getConnection();
+      $q = 'SELECT * FROM users WHERE user_id="'.$id.'"';
+      $res = $db->query($q, PDO::FETCH_ASSOC);
+
+      $users = $res->fetchAll();
+      if (empty($users)) throw new Exception('No such user');
+
+      return $users[0];
+  }
+
+  public static function getUserPosts()
+  {
+
+  }
+
 }
