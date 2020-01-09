@@ -42,13 +42,13 @@
       </label>
       <label for="filterBlue">Blue filter
           <input type="checkbox" id="filterBlue">
-      </label>
-
-  <p>Add description</p>
-  <input type="text" name="description">
-  <button type="submit">Upload</button>
+      </label> <button type="submit">Upload</button>
   </form>
   -->
+  <p>Add description</p>
+  <input type="text" name="description" id="description">
+
+
 <button onclick="submit()">Upload</button>
 
 
@@ -57,96 +57,5 @@
 
 
 <?php require_once('footer.php');?>
-<script>
-"use strict";
-const WIDTH = 240;
-const HEIGHT = 160;
-
-
-let video = document.getElementById('video');
-
-
-document.getElementById('start').addEventListener('click',async(e) => {
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia({video: true});
-        video.srcObject = stream;
-    }catch (e) {
-        console.log(e);
-        let errorMessage = document.getElementById('error');
-        errorMessage.innerText = `Failed getting image from camera: ${e.message}`;
-        errorMessage.style.display = 'block';
-    }
-});
-
-
-const canvas = document.getElementById('canvas');
-const context = canvas.getContext('2d');
-
-const back = document.createElement('canvas');
-const backContext = back.getContext('2d');
-
-let image = new Image();
-
-canvas.width = WIDTH;
-canvas.height = HEIGHT;
-
-document.getElementById('snap').addEventListener('click', function() {
-
-    context.drawImage(video, 0, 0, WIDTH, HEIGHT);
-    });
-
-
-/*document.getElementById('filterGray').addEventListener('change', function(){
-    let width =  video.clientWidth;
-
-    let height = video.clientHeight;
-
-
-    canvas.width = width;
-    canvas.height = height;
-    back.width = width;
-    back.height = height;
-    draw(video, context, backContext, width, height);
-}, false);
-
-function  draw(video, context, backContext, width, height) {
-
-    backContext.drawImage(video, 0, 0, width, height);
-
-    let idata = backContext.getImageData(0, 0, width, height);
-
-    for (let i = 0; i < idata.data.length;  i += 4){
-        let r = idata.data[i];
-        let g = idata.data[i + 1];
-        let b = idata.data[i + 2];
-
-        let brightness = ( 3 * r + 4 * g + b)>>>3;
-        idata.data[i] = brightness;
-        idata.data[i + 1] = brightness;
-        idata.data[i + 2] = brightness;
-    }
-
-    context.putImageData(idata, 0, 0);
-}*/
-
-async function submit() {
-    let imageBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-
-    let formData = new FormData();
-    formData.append('description', 'lalala');
-    formData.append('image', imageBlob, 'image.png');
-
-    let response = await fetch('/new', {
-        method: 'POST',
-        body: formData
-    });
-
-    let result = await response.json();
-    let resultMessage = document.getElementById('success');
-    resultMessage.innerText = result.result;
-    console.log(result);
-    resultMessage.style.display = 'block';
-}
-
-</script>
+<script src="/views/new.js"></script>
 

@@ -35,15 +35,9 @@ class Router
 					$parameters = $segments;
 
 
-				// подключить файл класса-контроллера
-//				$controllerFile = ROOT.'/controllers/'.$controllerName.'.php';// add try catch
 				if (class_exists($controllerName)) {
-//					include_once($controllerFile);
 
-
-                    // создать объект, вызвать метод (экшн)
                     $controllerObject = new $controllerName;
-                    //$result = $controllerObject->$actionName($parameters);
                     $result = call_user_func_array([$controllerObject, $actionName], $parameters);// так параметры передаются как отдельные переменные, а не как массив
                     if ($result != null){
                         exit;

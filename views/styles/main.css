@@ -57,7 +57,9 @@ nav a:hover {
 
 article {
     max-width: 80%;
-    margin: 0 auto;
+    margin: 50px auto;
+    border: 1px solid #730927;
+    padding: 20px;
 }
 
 .username {
@@ -108,4 +110,39 @@ article {
     font-size: 1.5em;
     padding: 10px;
     background-color: rgba(0, 255, 0, .2);
+}
+
+.post-author {
+    text-decoration: none;
+    color: #730927;
+    margin-left: 100px;
+    margin-bottom: 0;
+}
+
+.post-author:hover {
+    text-decoration: underline;
+}
+
+.post-date {
+    font-size: 0.8em;
+    color: rgba(0, 0, 0, .6);
+    margin-left: 100px;
+    padding-top: 0;
+    margin-top: 0;
+}
+
+.post-description {
+
+}
+
+.post-likes {
+    margin-top: 50px;
+}
+
+.post-comments {
+    border-top: 1px solid #730927;
+}
+
+.post-image img {
+    width: 75%;
 }

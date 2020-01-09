@@ -33,4 +33,16 @@ class GalleryController
         echo __CLASS__.'::'.__METHOD__.'<br/>';
         return true;
     }
+
+    public function actionGetPostsLikes()
+    {
+
+        if (!empty($_POST['json'])){
+
+            $ids = (array)json_decode($_POST['json']);
+            \Gallery::getPostsLikes($ids);
+        }
+        return true;
+    }
+
 }

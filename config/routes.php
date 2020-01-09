@@ -6,6 +6,7 @@ return [
 	'gallery/([a-z]+)/([0-9, a-z]+)' => 'gallery/sortby/$1/$2',	//gallery/user/42 || gallery/category/4242
 //	'gallery/([a-z]+)/([a-z]+)'	=>	'gallery/sortby/$1/$2',	//	 gallery/user/rudi || gallery/category/cats
 	'gallery' => 'gallery/list',	// actionList in GalleryController	//all list of all users
+    'posts/likes' => 'gallery/getPostsLikes',
 
     /*  profile controller  */
     'profile/([0-9])' => 'profile/user/$1',

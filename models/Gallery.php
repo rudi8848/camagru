@@ -11,10 +11,6 @@ class Gallery
 
 	public static function getPicturesList(int $userId = 0)
 	{
-		$host = 'localhost';
-		$dbname = 'testcam';
-		$user = 'root';
-		$password = '';
 
 		$db = DB::getConnection();
 
@@ -36,5 +32,30 @@ class Gallery
 	{
 
 	}
+
+	public static function getPostsLikes(array $postId)
+    {
+        try {
+
+            $db = DB::getConnection();
+
+
+            $ids = implode(',', $postId);
+//            var_dump($ids);exit;
+            $q = 'SELECT to_post, COUNT(*) FROM likes WHERE to_post in ('.$ids.') GROUP by to_post';
+            $res = $db->query($q, PDO::FETCH_ASSOC);
+
+            $likes = $res->fetchAll();
+//            print_r($likes);
+            $response = [];
+            foreach ($likes as $k => $v) {
+                $response[$v['to_post']] = $v['COUNT(*)'];
+            }
+            echo json_encode($response);
+//            print_r($response);
+        } catch (Exception $e) {
+
+        }
+    }
 
 }
