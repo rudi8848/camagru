@@ -159,3 +159,24 @@ article {
 .post-image img {
     width: 75%;
 }
+
+.pagination {
+    width: 60%;
+}
+
+.pagination a {
+    border: 1px solid black;
+    padding: 10px;
+    text-decoration: none;
+    color: #FFFFFF;
+    background-color: #333333;
+}
+
+.pagination a:hover {
+    background-color: #730927;
+    font-weight: bold;
+}
+
+.pagination > .current {
+    background-color: #730927;
+}

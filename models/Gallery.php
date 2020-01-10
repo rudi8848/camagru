@@ -3,7 +3,7 @@
 class Gallery
 {
 
-    const POST_PER_PAGE = 5;
+    const POST_PER_PAGE = 10;
 
 
 	public static function getPictureById($id)
