@@ -10,9 +10,6 @@ main {
     margin: 0;
 }
 
-article {
-    background-color: #FFFFFF;
-}
 
 header {
     height: 200px;
@@ -66,9 +63,11 @@ nav a:hover {
 
 article {
     max-width: 80%;
-    margin: 50px auto;
+    margin: 30px auto;
     border: 1px solid #730927;
     padding: 20px;
+    border-radius: 2px;
+    background-color: #FFFFFF;
 }
 
 .username {
