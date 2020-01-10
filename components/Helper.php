@@ -2,8 +2,12 @@
 
 class Helper
 {
-    public static function redirect(string $url = 'https://camagru.com/gallery') : void
+    public static function redirect() : void
     {
+        $args = func_get_args();
+
+        $url = $args[0];
+        if (empty($url)) $url = getenv('SERVER_NAME');
         ob_start();
         header('Location: '.$url);
         ob_end_flush();

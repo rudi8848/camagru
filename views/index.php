@@ -2,6 +2,10 @@
 
 <div class="gallery">
 <!--<h1>--><?//=$data['title']?><!--</h1>-->
+    <p>page <?=$data['currentPage']?> of <?=$data['totalPages']?></p>
+    <div class="pagination">
+        
+    </div>
 <?php foreach ($data['posts'] as $post): ?>
 
 <article>

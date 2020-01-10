@@ -3,15 +3,18 @@
 class Gallery
 {
 
+    const POST_PER_PAGE = 5;
+
+
 	public static function getPictureById($id)
 	{
 		# code...
 	}
 
 
-	public static function getPicturesList(int $userId = 0)
+	public static function getPicturesList(int $page, int $userId = 0)
 	{
-
+//var_dump([$page, $userId]);
 		$db = DB::getConnection();
 
 		$picturesList = [];
@@ -19,7 +22,7 @@ class Gallery
 		$result = $db->query('SELECT *
 			FROM posts 
 			JOIN users on posts.author=users.user_id '. ($userId > 0 ? " WHERE user_id = $userId " : "").
-			'ORDER BY created_at DESC LIMIT 10');
+			'ORDER BY created_at DESC LIMIT '.$page * self::POST_PER_PAGE.', '.self::POST_PER_PAGE);
 
 		while($row = $result->fetch(PDO::FETCH_ASSOC)) {
 			$picturesList [] = $row;
@@ -27,6 +30,16 @@ class Gallery
 
 		return $picturesList;
 	}
+
+	public static function getPagesTotalNumber(int $userId = 0)
+    {
+        $db = DB::getConnection();
+
+        $q = 'SELECT COUNT(*)  FROM posts '.($userId > 0 ? " WHERE author = $userId " : "");
+        $result = $db->prepare($q);
+        $result->execute();
+        return  ceil((int)$result->fetchColumn() / self::POST_PER_PAGE);
+    }
 
 	public static function getUserPictures($userId)
 	{
@@ -41,14 +54,14 @@ class Gallery
 
             $ids = implode(',', $postId);
 
-            $q = 'SELECT to_post, COUNT(*) FROM likes WHERE to_post in ('.$ids.') GROUP by to_post';
+            $q = 'SELECT to_post, COUNT(*) likescount FROM likes WHERE to_post in ('.$ids.') GROUP by to_post';
             $res = $db->query($q, PDO::FETCH_ASSOC);
 
             $likes = $res->fetchAll();
 
             $response = [];
             foreach ($likes as $k => $v) {
-                $response[$v['to_post']] = $v['COUNT(*)'];
+                $response[$v['to_post']] = $v['likescount'];
             }
             echo json_encode($response);
 

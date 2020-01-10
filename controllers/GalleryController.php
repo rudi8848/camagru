@@ -7,10 +7,26 @@ class GalleryController
 	{
 		$data = [];
 
-		$picturesList = Gallery::getPicturesList();
+		$page = 0;
+
+		$args = func_get_args();
+
+		if (!empty($args)){
+
+		    $page = (int)$args[0];
+		    if ($page > 0) $page -= 1;
+		    $page = abs($page);
+		}
+        $totalPages = Gallery::getPagesTotalNumber();
+
+        if ($page > ( $totalPages - 1 )) $page = 0;
+
+		$picturesList = Gallery::getPicturesList($page);
 
 		$data['posts'] = $picturesList;
 		$data['title'] = 'Gallery';
+		$data['currentPage'] = $page + 1;
+        $data['totalPages'] = $totalPages;
 		$view = new View();
 		$view->render('index.php', $data);
 //var_dump($data);exit;

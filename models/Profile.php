@@ -36,7 +36,7 @@ class Profile
           mail(
             $email,
             'Camagru registration',
-            'Hello '.$name.'! Thanks for registration at https://camagru.com!',
+            'Hello '.$name.'! Thanks for registration at '.getenv('SERVER_NAME'),
             join("\r\n", [
               "From: $adminEmail",
               "Reply-To: $adminEmail",
