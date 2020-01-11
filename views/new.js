@@ -1,6 +1,6 @@
 "use strict";
-const WIDTH = 240;
-const HEIGHT = 160;
+const WIDTH = 640;
+const HEIGHT = 480;
 
 
 let video = document.getElementById('video');
@@ -33,6 +33,7 @@ canvas.height = HEIGHT;
 document.getElementById('snap').addEventListener('click', function() {
 
     context.drawImage(video, 0, 0, WIDTH, HEIGHT);
+    context.drawImage(document.getElementById('frame'),0,0);
 });
 
 

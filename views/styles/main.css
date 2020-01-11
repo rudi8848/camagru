@@ -51,6 +51,7 @@ nav a {
     margin: 17px 0;
     width: 100%;
     display: block;
+    border-radius: 2px;
 }
 
 .gallery-pic {
@@ -169,6 +170,7 @@ article {
     text-decoration: none;
     color: #FFFFFF;
     background-color: #333333;
+    border-radius: 2px;
 }
 
 .pagination a:hover {

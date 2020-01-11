@@ -10,13 +10,10 @@
 
             $index = strripos($uri, 'page');
 
-            if ($index) {
-
-                $uri = substr($uri, 0, $index -1);
-            }
+            if ($index) $uri = substr($uri, 0, $index -1);
+            if ($uri == "/") $uri = "/gallery";
 
             $lastVisible = min($end, $current + (10 - $current%10));
-
             $firstVisible = max($current - ($current % 10), 1);
 
             $prev = max($current - 1, 1);

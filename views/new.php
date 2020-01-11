@@ -21,12 +21,16 @@
 <?php else: ?>
 
   <button id="start">Start</button>
-<div class="video-wrapper">
-  <video id="video" width="240" height="160" autoplay></video>
-</div>
   <button id="snap">Snap Photo</button>
-  <canvas id="canvas">Your browser is not supported</canvas>
-
+<div align="center">
+    <div class="video-wrapper">
+        <video id="video" width="240" height="160" autoplay></video>
+    </div>
+    <div class="canvas-wrapper">
+        <canvas id="canvas">Your browser is not supported</canvas>
+    </div>
+</div>
+<img src="/views/styles/frames/hat.png" id="frame" width="240">
 <!---
   <form action="/new" method="post" enctype="multipart/form-data" id="new-shot">
   <input type="file" name="image" >
