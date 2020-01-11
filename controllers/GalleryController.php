@@ -71,4 +71,21 @@ class GalleryController
         return true;
     }
 
+    public static function actionGetPostsComments()
+    {
+        if (!empty($_POST['json'])){
+
+            $ids = (array)json_decode($_POST['json']);
+//            print_r($ids);exit;
+            \Gallery::getPostsComments($ids);
+        }
+        return true;
+    }
+
+    public static function actionCommentPost()
+    {
+        print_r(!$_POST);
+        return true;
+    }
+
 }

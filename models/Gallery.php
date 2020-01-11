@@ -100,4 +100,30 @@ class Gallery
         }
     }
 
+
+    public static function getPostsComments(array $posts)
+    {
+
+        $comments = [];
+        $db = DB::getConnection();
+
+        $ids = implode(',', $posts);
+
+        $q = 'SELECT users.username, comments.* FROM comments 
+                JOIN users on users.user_id = comments.author  
+                WHERE to_post in ('.$ids.') AND is_deleted=0 order by created_at';
+
+        $res = $db->query($q, PDO::FETCH_ASSOC);
+        while($row = $res->fetch(PDO::FETCH_ASSOC)) {
+            $comments [] = $row;
+        }
+        $response = [];
+        foreach ($comments as $k => $v) {
+            $response[$v['to_post']][] = $v;
+        }
+        $response = json_encode($response);
+        echo $response;
+        exit;
+    }
+
 }

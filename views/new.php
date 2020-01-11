@@ -31,24 +31,7 @@
     </div>
 </div>
 <img src="/views/styles/frames/hat.png" id="frame" width="240">
-<!---
-  <form action="/new" method="post" enctype="multipart/form-data" id="new-shot">
-  <input type="file" name="image" >
-  <br/>
-      <label for="filterGray">Monochrome
-          <input type="checkbox" id="filterGray">
-      </label>
-      <label for="filterRed">Red filter
-          <input type="checkbox" id="filterRed">
-      </label>
-      <label for="filterGreen">Green filter
-          <input type="checkbox" id="filterGreen">
-      </label>
-      <label for="filterBlue">Blue filter
-          <input type="checkbox" id="filterBlue">
-      </label> <button type="submit">Upload</button>
-  </form>
-  -->
+
   <p>Add description</p>
   <input type="text" name="description" id="description">
 

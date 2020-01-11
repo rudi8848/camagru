@@ -121,7 +121,7 @@ article {
     background-color: rgba(0, 255, 0, .2);
 }
 
-.post-author {
+.post-author{
     text-decoration: none;
     color: #730927;
     margin-left: 100px;
@@ -180,4 +180,19 @@ article {
 
 .pagination > .current {
     background-color: #730927;
+}
+
+.comment-author {
+    text-decoration: none;
+    color: #730927;
+    font-weight: bold;
+}
+
+.comment-author:hover {
+    text-decoration: underline;
+}
+
+.comment-date {
+    font-size: 0.8em;
+    color: rgba(0, 0, 0, .6);
 }

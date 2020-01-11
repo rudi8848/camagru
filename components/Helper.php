@@ -2,12 +2,12 @@
 
 class Helper
 {
-    public static function redirect() : void
+    public static function redirect($url = '/') : void
     {
-        $args = func_get_args();
+//        $args = func_get_args();
 
-        $url = $args[0];
-        if (empty($url)) $url = getenv('SERVER_NAME');
+//        $url = $args[0];
+        if (empty($url)) $url = '/';
         ob_start();
         header('Location: '.$url);
         ob_end_flush();

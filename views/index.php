@@ -12,13 +12,16 @@
     <p class="post-description"><?=$post['description']?> </p>
     <p class="post-image"><img src="<?=$post['image_path']?>"></p>
     <p><img src="/views/styles/pic/thumb.svg" width="25px" class="like" onclick="setLike(<?=$post['post_id']?>)"> <span class="post-likes" id="<?php echo 'likes-'.$post['post_id']?>"></span></p>
-    <p class="post-comments" id="<?php echo 'comments-'.$post['post_id']?>"></p>
+    <div class="post-comments" id="<?php echo 'comments-'.$post['post_id']?>"></div>
 </article>
 <?php endforeach?>
     <?php include 'pagination.php'?>
 </div>
 <?php require_once('footer.php');?>
+
+
 <script src="/views/getLikes.js"></script>
+<!--<script src="/views/getComments.js"></script>-->
 <script>
 
     async function setLike(postId) {
