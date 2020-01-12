@@ -23,7 +23,16 @@ class GalleryController
 
 		$picturesList = Gallery::getPicturesList($page);
 
-		$data['posts'] = $picturesList;
+		$comments  = [];
+
+		foreach ($picturesList as $post) {
+		    $comments[] = $post['post_id'];
+
+        }
+
+        $data['comments'] = Gallery::getPostsComments($comments);
+
+        $data['posts'] = $picturesList;
 		$data['title'] = 'Gallery';
 		$data['currentPage'] = $page + 1;
         $data['totalPages'] = $totalPages;
@@ -71,16 +80,16 @@ class GalleryController
         return true;
     }
 
-    public static function actionGetPostsComments()
-    {
-        if (!empty($_POST['json'])){
-
-            $ids = (array)json_decode($_POST['json']);
-//            print_r($ids);exit;
-            \Gallery::getPostsComments($ids);
-        }
-        return true;
-    }
+//    public static function actionGetPostsComments()
+//    {
+//        if (!empty($_POST['json'])){
+//
+//            $ids = (array)json_decode($_POST['json']);
+////            print_r($ids);exit;
+//            \Gallery::getPostsComments($ids);
+//        }
+//        return true;
+//    }
 
     public static function actionCommentPost()
     {

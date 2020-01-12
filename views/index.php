@@ -12,7 +12,20 @@
     <p class="post-description"><?=$post['description']?> </p>
     <p class="post-image"><img src="<?=$post['image_path']?>"></p>
     <p><img src="/views/styles/pic/thumb.svg" width="25px" class="like" onclick="setLike(<?=$post['post_id']?>)"> <span class="post-likes" id="<?php echo 'likes-'.$post['post_id']?>"></span></p>
-    <div class="post-comments" id="<?php echo 'comments-'.$post['post_id']?>"></div>
+    <div class="post-comments" id="<?php echo 'comments-'.$post['post_id']?>">
+
+        <?php if (isset($data['comments'][$post['post_id']])) :?>
+            <?php foreach ($data['comments'][$post['post_id']] as $comment) :?>
+                <div class='comment'>
+                    <a href='/profile/<?=$comment['author']?> class='comment-author'><?=$comment['username']?></a>
+                    <?php $date = new DateTime($comment['created_at']);?>
+                    <p class='comment-date'><?=$date->format('d.m.Y H:i')?></p>
+                    <p class='comment-content'><?=$comment['content']?></p>
+                </div>
+            <?php endforeach?>
+
+        <?php endif; ?>
+    </div>
 </article>
 <?php endforeach?>
     <?php include 'pagination.php'?>
@@ -21,7 +34,6 @@
 
 
 <script src="/views/getLikes.js"></script>
-<!--<script src="/views/getComments.js"></script>-->
 <script>
 
     async function setLike(postId) {
@@ -36,9 +48,7 @@
         });
 
         let result = await response.json();
-        // console.log(result);
         let code = parseInt(result['inserted']);
-        // console.log(code);
         let element = document.getElementById('likes-'+postId);
         let likes = parseInt(element.innerText);
         if (isNaN(likes)) likes = 0;

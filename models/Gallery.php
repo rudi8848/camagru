@@ -121,9 +121,7 @@ class Gallery
         foreach ($comments as $k => $v) {
             $response[$v['to_post']][] = $v;
         }
-        $response = json_encode($response);
-        echo $response;
-        exit;
+        return $response;
     }
 
 }

@@ -11,7 +11,7 @@ window.onload = function () {
     }
 
     getLikesCount(ids);
-    getComments(ids);
+    // getComments(ids);
 }
 
 

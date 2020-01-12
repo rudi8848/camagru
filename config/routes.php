@@ -9,7 +9,7 @@ return [
     'gallery' => 'gallery/list',	// actionList in GalleryController	//all list of all users
     'posts/likes' => 'gallery/getPostsLikes',
     'post/setlike' => 'gallery/setLike',
-    'posts/comments' => 'gallery/getPostsComments',
+//    'posts/comments' => 'gallery/getPostsComments',
     'posts/comment' => 'gallery/commentPost',
 
     /*  profile controller  */
