@@ -1,5 +1,7 @@
 <?php require_once('header.php');?>
-
+<?php if(isset($_SESSION['user']['id'])):?>
+<a href="/profile/<?=$_SESSION['user']['id']?>">My profile</a>
+<?php endif;?>
 <div class="gallery">
 <!--<h1>--><?//=$data['title']?><!--</h1>-->
     <?php include 'pagination.php'?>
@@ -15,19 +17,24 @@
 
     <div class="post-comments" id="<?php echo 'comments-'.$post['post_id']?>">
         <?php if(isset($_SESSION['user']['id'])) : ?>
-            <textarea id="new-comment-<?=$post['post_id']?>"></textarea>
+        <div class="comment-new-container clearfix">
+            <textarea class="comment-new" id="new-comment-<?=$post['post_id']?>"></textarea>
             <button class="submit-comment" id="submit-comment-<?=$_SESSION['user']['id']?>-<?=$post['post_id']?>">Comment</button>
-        <?php endif;?>
+        </div>
+            <?php endif;?>
 
         <?php if (isset($data['comments'][$post['post_id']])) :?>
+        <div class="comments-all">
             <?php foreach ($data['comments'][$post['post_id']] as $comment) :?>
                 <div class='comment'>
+                    <img src="<?=$comment['pic']?>" width="50px" class="comment-author-pic">
                     <a href='/profile/<?=$comment['author']?>' class='comment-author'><?=$comment['username']?></a>
                     <?php $date = new DateTime($comment['created_at']);?>
                     <p class='comment-date'><?=$date->format('d.m.Y H:i')?></p>
                     <p class='comment-content'><?=$comment['content']?></p>
                 </div>
             <?php endforeach?>
+        </div>
         <?php endif; ?>
 
     </div>
@@ -39,28 +46,3 @@
 
 
 <script src="/views/getLikes.js"></script>
-<script>
-
-    async function setLike(postId) {
-
-        let data = new FormData();
-        data.append('json', JSON.stringify({'post' : postId}));
-
-        let response = await fetch('/post/setlike', {
-            method: 'POST',
-            body: data
-        });
-
-        let result = await response.json();
-        let code = parseInt(result['inserted']);
-        let element = document.getElementById('likes-'+postId);
-        let likes = parseInt(element.innerText);
-        if (isNaN(likes)) likes = 0;
-        likes += code;
-        element.innerText = likes;
-
-    }
-
-
-
-</script>

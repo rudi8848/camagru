@@ -27,6 +27,7 @@ try {
 		`email` VARCHAR(100) NOT NULL UNIQUE,
 		`role` INT(11) NOT NULL DEFAULT 3,
 		`blocked` TINYINT(1) DEFAULT 0,
+		`pic` VARCHAR (255) DEFAULT '/views/styles/pic/default-user.png',
 		FOREIGN KEY (`role`) REFERENCES `roles` (`role_id`))
 		ENGINE=InnoDB DEFAULT CHARSET=utf8");
 

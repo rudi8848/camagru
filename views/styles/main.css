@@ -195,4 +195,62 @@ article {
 .comment-date {
     font-size: 0.8em;
     color: rgba(0, 0, 0, .6);
+    margin-left: 55px;
+    margin-top: 5px;
+}
+
+.comment-author-pic {
+    position: relative;
+    top: 30px;
+
+}
+
+.comment {
+    font-size: 0.8em;
+    padding-top: 0;
+    margin: 0;
+}
+
+
+.comment:nth-child(odd) {
+    background-color: rgba(245, 206, 197, .1);
+}
+
+.comment:nth-child(even) {
+    background-color: rgba(155, 155, 155, .1);
+}
+
+.comment-content {
+    /*height: 50px;*/
+}
+
+.comment-new {
+    margin-top: 20px;
+    width: 95%;
+    height: 50px;
+    border-radius: 2px;
+}
+
+button {
+    background-color: #730927;
+    padding: 10px 20px;
+    color: #FFFFFF;
+    font-weight: bolder;
+    border-radius: 2px;
+}
+
+.submit-comment {
+    float: right;
+    margin-right: 10%;
+}
+
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.comments-all {
+    max-height: 250px;
+    overflow: auto;
 }

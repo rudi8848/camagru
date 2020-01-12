@@ -32,6 +32,7 @@ class Profile
 //          echo 'Your id is '.$userId;
           $_SESSION['user']['id'] = $userId;
           $_SESSION['user']['name'] = $name;
+          $_SESSION['user']['pic'] = '';
 
           mail(
             $email,
@@ -79,6 +80,7 @@ class Profile
 
         $_SESSION['user']['id'] = $user['user_id'];
         $_SESSION['user']['name'] = $user['username'];
+        $_SESSION['user']['pic'] = $user['pic'];
       }
         return true;
     }

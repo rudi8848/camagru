@@ -109,7 +109,7 @@ class Gallery
 
         $ids = implode(',', $posts);
 
-        $q = 'SELECT users.username, comments.* FROM comments 
+        $q = 'SELECT users.username, users.pic, comments.* FROM comments 
                 JOIN users on users.user_id = comments.author  
                 WHERE to_post in ('.$ids.') AND is_deleted=0 order by created_at';
 
@@ -137,6 +137,7 @@ class Gallery
             $db->exec('INSERT INTO comments (to_post, content, author) VALUES ("'.$data['post'].'", "'.$data['content'].'", "'.(int)$_SESSION['user']['id'].'" )');
             echo json_encode(['content' => $data['content'],
                 'author' => $_SESSION['user']['name'],
+                'pic' => $_SESSION['user']['pic'],
                 'id' => $_SESSION['user']['id'],
                 'date' => $date->format('d.m.Y H:i')]);
         } catch (Exception $e) {

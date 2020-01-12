@@ -37,6 +37,27 @@ async function getLikesCount(postsIds) {
     }
 }
 
+
+async function setLike(postId) {
+
+    let data = new FormData();
+    data.append('json', JSON.stringify({'post' : postId}));
+
+    let response = await fetch('/post/setlike', {
+        method: 'POST',
+        body: data
+    });
+
+    let result = await response.json();
+    let code = parseInt(result['inserted']);
+    let element = document.getElementById('likes-'+postId);
+    let likes = parseInt(element.innerText);
+    if (isNaN(likes)) likes = 0;
+    likes += code;
+    element.innerText = likes;
+
+}
+
 async function submitComment(){
 
     const id = this.getAttribute("id");
@@ -64,7 +85,7 @@ async function submitComment(){
     if(result['content']) {
         document.getElementById('new-comment-'+postId).value = '';
 
-        content.innerHTML = '<a href="/profile/' + result['id'] + '" class="comment-author">' + result['author'] + '</a>' +
+        content.innerHTML = '<img src="'+ result['pic'] +'" width="50px" class="comment-author-pic"><a href="/profile/' + result['id'] + '" class="comment-author">' + result['author'] + '</a>' +
             '<p class="comment-date">' + result['date'] + '</p>' +
             '<p class="comment-content">' + result['content'] + '</p>';
 

@@ -38,7 +38,6 @@ class GalleryController
         $data['totalPages'] = $totalPages;
 		$view = new View();
 		$view->render('index.php', $data);
-//var_dump($data);exit;
 
 		return true;
 	}
@@ -80,24 +79,13 @@ class GalleryController
         return true;
     }
 
-//    public static function actionGetPostsComments()
-//    {
-//        if (!empty($_POST['json'])){
-//
-//            $ids = (array)json_decode($_POST['json']);
-////            print_r($ids);exit;
-//            \Gallery::getPostsComments($ids);
-//        }
-//        return true;
-//    }
 
     public static function actionCommentPost()
     {
-//        print_r($_POST);
         if (!empty($_POST)) {
 
             $data['content'] = strip_tags($_POST['comment']);
-//            $data['author'] = (int)$_POST['key'];
+
             $data['post'] = (int)$_POST['post'];
 
             if (empty($data['content']) || empty($data['post'])) {

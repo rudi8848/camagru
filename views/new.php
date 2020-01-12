@@ -30,7 +30,7 @@
         <canvas id="canvas">Your browser is not supported</canvas>
     </div>
 </div>
-<img src="/views/styles/frames/hat.png" id="frame" width="240">
+<img src="/views/styles/frames/fire.png" id="frame" width="240">
 
   <p>Add description</p>
   <input type="text" name="description" id="description">
