@@ -12,19 +12,24 @@
     <p class="post-description"><?=$post['description']?> </p>
     <p class="post-image"><img src="<?=$post['image_path']?>"></p>
     <p><img src="/views/styles/pic/thumb.svg" width="25px" class="like" onclick="setLike(<?=$post['post_id']?>)"> <span class="post-likes" id="<?php echo 'likes-'.$post['post_id']?>"></span></p>
+
     <div class="post-comments" id="<?php echo 'comments-'.$post['post_id']?>">
+        <?php if(isset($_SESSION['user']['id'])) : ?>
+            <textarea id="new-comment-<?=$post['post_id']?>"></textarea>
+            <button class="submit-comment" id="submit-comment-<?=$_SESSION['user']['id']?>-<?=$post['post_id']?>">Comment</button>
+        <?php endif;?>
 
         <?php if (isset($data['comments'][$post['post_id']])) :?>
             <?php foreach ($data['comments'][$post['post_id']] as $comment) :?>
                 <div class='comment'>
-                    <a href='/profile/<?=$comment['author']?> class='comment-author'><?=$comment['username']?></a>
+                    <a href='/profile/<?=$comment['author']?>' class='comment-author'><?=$comment['username']?></a>
                     <?php $date = new DateTime($comment['created_at']);?>
                     <p class='comment-date'><?=$date->format('d.m.Y H:i')?></p>
                     <p class='comment-content'><?=$comment['content']?></p>
                 </div>
             <?php endforeach?>
-
         <?php endif; ?>
+
     </div>
 </article>
 <?php endforeach?>
@@ -37,7 +42,6 @@
 <script>
 
     async function setLike(postId) {
-        console.log('like '+ postId);
 
         let data = new FormData();
         data.append('json', JSON.stringify({'post' : postId}));
@@ -56,5 +60,7 @@
         element.innerText = likes;
 
     }
+
+
 
 </script>

@@ -23,6 +23,13 @@ class ProfileController
         $profileData = \Profile::getProfile($id);
         $userPosts = \Gallery::getPicturesList($page, $id);
 
+        $comments  = [];
+        foreach ($userPosts as $post) {
+            $comments[] = $post['post_id'];
+
+        }
+        $data['comments'] = Gallery::getPostsComments($comments);
+
         $data['posts'] = $userPosts;
         $data['title'] = $profileData['username'].'\'s profile';
         $data['currentPage'] = $page + 1;

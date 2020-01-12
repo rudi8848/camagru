@@ -93,7 +93,18 @@ class GalleryController
 
     public static function actionCommentPost()
     {
-        print_r(!$_POST);
+//        print_r($_POST);
+        if (!empty($_POST)) {
+
+            $data['content'] = strip_tags($_POST['comment']);
+//            $data['author'] = (int)$_POST['key'];
+            $data['post'] = (int)$_POST['post'];
+
+            if (empty($data['content']) || empty($data['post'])) {
+                return false;
+            }
+            Gallery::commentPost($data);
+        }
         return true;
     }
 

@@ -11,7 +11,12 @@ window.onload = function () {
     }
 
     getLikesCount(ids);
-    // getComments(ids);
+
+    const commentBtns = document.getElementsByClassName("submit-comment");
+
+    for (let i = 0; i < commentBtns.length; ++i) {
+        commentBtns[i].addEventListener('click', submitComment, false);
+    }
 }
 
 
@@ -32,34 +37,40 @@ async function getLikesCount(postsIds) {
     }
 }
 
-async function getComments(postsIds) {
+async function submitComment(){
 
-    let data = new FormData();
-    data.append('json', JSON.stringify(postsIds));
+    const id = this.getAttribute("id");
 
-    let response = await fetch('/posts/comments', {
+    const postId = id.slice(id.lastIndexOf('-') + 1);
+
+    const msg = document.getElementById('new-comment-'+postId).value.trim();
+
+    if (msg === "") return ;
+
+    let formData = new FormData();
+    formData.append('comment', msg);
+    formData.append('post', postId);
+
+    let response = await fetch('posts/comment', {
         method: 'POST',
-        body: data
+        body: formData
     });
 
     let result = await response.json();
-    // console.log(result);
-    for (let post in result) {
-        // console.log(result[post]);
-        for (let comment in result[post]) {
 
-            let div = document.createElement('div');
-            let date =  new Date(result[post][comment]['created_at']);
-            console.log(date);
-            let formatted_date = date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear() + " " + date.getHours()+":"+date.getMinutes()
-            console.log(formatted_date)
-            div.className = "comment";
-            div.innerHTML = "<a href='/profile/"+result[post][comment]['author']+"' class='comment-author'>"+result[post][comment]['username']+"</a>" +
-                "<p class='comment-date'>"+formatted_date+"</p>" +
-                " <p class='comment-content'>"+result[post][comment]['content']+"</p>";
-            document.getElementById('comments-'+ post).append(div);
+    let content = document.createElement('div');
+    content.className = 'comment';
 
-        }
+    if(result['content']) {
+        document.getElementById('new-comment-'+postId).value = '';
+
+        content.innerHTML = '<a href="/profile/' + result['id'] + '" class="comment-author">' + result['author'] + '</a>' +
+            '<p class="comment-date">' + result['date'] + '</p>' +
+            '<p class="comment-content">' + result['content'] + '</p>';
+
+    } else{
+        content.innerText = "Error";
     }
+    document.getElementById('comments-'+postId).append(content);
 }
 

@@ -77,14 +77,14 @@ class Gallery
             if (empty($_SESSION['user']['id'])) throw new Exception('Not authorized');
             $db = DB::getConnection();
 
-            $q = 'SELECT COUNT(*) FROM likes WHERE to_post = "'.$postId.'" AND author = "'.$_SESSION['user']['id'].'"';
+            $q = 'SELECT COUNT(*) FROM likes WHERE to_post = "'.$postId.'" AND author = "'.(int)$_SESSION['user']['id'].'"';
             $result = $db->prepare($q);
             $result->execute();
             $likes = $result->fetchColumn();
 
             if ($likes == '0'){
                 // set like in db
-                $q = 'INSERT INTO likes (to_post, author) VALUES ("'.$postId.'", "'.$_SESSION['user']['id'].'")';
+                $q = 'INSERT INTO likes (to_post, author) VALUES ("'.$postId.'", "'.(int)$_SESSION['user']['id'].'")';
                 $db->exec($q);
 
                 echo json_encode(['inserted' => '1']);
@@ -122,6 +122,26 @@ class Gallery
             $response[$v['to_post']][] = $v;
         }
         return $response;
+    }
+
+    public static function commentPost(array $data) : void
+    {
+        if (empty($_SESSION['user']['id'])) throw new Exception('Not authorized');
+
+        $db = DB::getConnection();
+
+        try {
+
+            $date = new DateTime('now');
+
+            $db->exec('INSERT INTO comments (to_post, content, author) VALUES ("'.$data['post'].'", "'.$data['content'].'", "'.(int)$_SESSION['user']['id'].'" )');
+            echo json_encode(['content' => $data['content'],
+                'author' => $_SESSION['user']['name'],
+                'id' => $_SESSION['user']['id'],
+                'date' => $date->format('d.m.Y H:i')]);
+        } catch (Exception $e) {
+            echo json_encode(['error' => true, 'message' => $e->getMessage()]);
+        }
     }
 
 }
