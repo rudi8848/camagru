@@ -1,16 +1,17 @@
 <?php require_once('header.php');?>
-<?php if(isset($_SESSION['user']['id'])):?>
-<a href="/profile/<?=$_SESSION['user']['id']?>">My profile</a>
-<?php endif;?>
+
 <div class="gallery">
 <!--<h1>--><?//=$data['title']?><!--</h1>-->
     <?php include 'pagination.php'?>
 <?php foreach ($data['posts'] as $post): ?>
 
 <article>
-    <h2><a class="post-author" href="/profile/<?=$post['user_id']?>"><?=$post['username']?></a></h2>
-    <p class="post-date"><?php $date = new DateTime($post['created_at']); echo 'created '.$date->format('d.m.Y \a\t H:i')?></p>
-    <br/>
+    <p>
+        <img src="<?=$post['pic']?>" width="100px" class="post-pic"><a class="post-author" href="/profile/<?=$post['user_id']?>"><?=$post['username']?></a>
+        <br/>
+        <span class="post-date"><?php $date = new DateTime($post['created_at']); echo 'created '.$date->format('d.m.Y \a\t H:i')?></span>
+    </p>
+<!--    <br/>-->
     <p class="post-description"><?=$post['description']?> </p>
     <p class="post-image"><img src="<?=$post['image_path']?>"></p>
     <p><img src="/views/styles/pic/thumb.svg" width="25px" class="like" onclick="setLike(<?=$post['post_id']?>)"> <span class="post-likes" id="<?php echo 'likes-'.$post['post_id']?>"></span></p>

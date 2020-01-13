@@ -10,6 +10,10 @@ main {
     margin: 0;
 }
 
+#to-the-main-page {
+    text-decoration: none;
+    color: #FFFFFF;
+}
 
 header {
     height: 200px;
@@ -35,23 +39,37 @@ header, footer {
 }
 
 nav {
-    width: 250px;
-    height: 150px;
-    float: right;
+    /*width: 250px;*/
+    /*height: 150px;*/
+    /*float: right;*/
 
 }
 
 nav a {
+    /*color: #FFFFFF;*/
+    /*text-decoration: none;*/
+    /*font-size: 1.5em;*/
+    /*text-align: center;*/
+    /*padding: 5px 0;*/
+    /*border: 1px solid #ffffff ;*/
+    /*margin: 17px 0;*/
+    /*width: 100%;*/
+    /*display: block;*/
+    /*border-radius: 2px;*/
+
+
     color: #FFFFFF;
     text-decoration: none;
     font-size: 1.5em;
     text-align: center;
-    padding: 5px;
+    padding: 5px 0;
     border: 1px solid #ffffff ;
     margin: 17px 0;
-    width: 100%;
-    display: block;
+    /*width: 250px;*/
+    min-width: 20%;
+    display: inline-block;
     border-radius: 2px;
+
 }
 
 .gallery-pic {
@@ -63,7 +81,7 @@ nav a:hover {
 }
 
 article {
-    max-width: 80%;
+    max-width: 60%;
     margin: 30px auto;
     border: 1px solid #730927;
     padding: 20px;
@@ -73,8 +91,28 @@ article {
 
 .username {
     color: #730927;
-    font-size: 1.5em;
+    font-size: 1.2em;
     font-weight: bolder;
+    text-align: right;
+    /*margin-right: 20%;*/
+    position: absolute;
+    left: 70%;
+}
+.username a {
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 0.9em;
+    font-weight: normal;
+}
+
+.username a:hover {
+    text-decoration: underline;
+
+}
+
+.pages {
+    margin-left: 20%;
+    color: rgba(0, 0, 0, .5);
 }
 
 .gallery {
@@ -124,12 +162,22 @@ article {
 .post-author{
     text-decoration: none;
     color: #730927;
-    margin-left: 100px;
+    margin-left: 0px;
     margin-bottom: 0;
+    position: relative;
+    top: -50px;
+    font-weight: bold;
+    font-size: 1.2em;
 }
 
 .post-author:hover {
     text-decoration: underline;
+}
+
+.post-pic {
+    display: inline;
+    position: relative;
+    /*top: -20px;*/
 }
 
 .post-date {
@@ -138,6 +186,8 @@ article {
     margin-left: 100px;
     padding-top: 0;
     margin-top: 0;
+    position: relative;
+    top: -50px;
 }
 
 .post-description {
@@ -292,7 +342,8 @@ div.parent-container {
     overflow: hidden;
     position: relative;
     /*left: 50%;*/
-    margin-left: -160px;
+    /*margin-left: -160px;*/
+    margin-bottom: 30px;
 }
 
 div.border-container {
@@ -301,9 +352,9 @@ div.border-container {
     /*-moz-border-radius: 40px;*/
     /*border-radius: 40px;*/
     overflow: hidden;
-    position: absolute;
-    bottom: 0px;
-    left: 0px;
+    /*position: absolute;*/
+    /*bottom: 0px;*/
+    /*left: 0px;*/
 }
 
 div.video-container {
@@ -313,6 +364,7 @@ div.video-container {
     bottom: 0px;
     left: 0px;
     z-index: -10;
+
 }
 
 div.img-container {
@@ -323,4 +375,34 @@ div.img-container {
     /*bottom: 10px;*/
     /*left: 10px;*/
     z-index: 10;
+}
+
+#description {
+    width: 640px;
+    height: 50px;
+    border: 1px solid #730927;
+    border-radius: 2px;
+}
+
+.frames-container {
+    padding: 15px;
+    width: 80%;
+    border: 2px solid #730927;
+    border-radius: 2px;
+}
+
+.frame-item {
+    display: inline-block;
+    border: 1px solid rgba(0, 0, 0, .1);
+    border-radius: 2px;
+    margin: 5px;
+}
+
+.frame-item:hover {
+    background-color: rgba(255, 255, 200, .6);
+    transform: scale(1.2);
+}
+
+.buttons-container {
+    padding: 10px;
 }

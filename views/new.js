@@ -88,6 +88,11 @@ async function submit() {
     let resultMessage = document.getElementById('success');
     resultMessage.innerText = result.result;
     resultMessage.style.display = 'block';
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+    document.getElementById('description').value = '';
 }
 
 window.onload = function () {
@@ -97,6 +102,7 @@ window.onload = function () {
     for (let i = 0; i < frames.length; ++i) {
         frames[i].addEventListener('change', choseFrame, false);
     }
+    frames[0].checked = true;
 }
 
 function choseFrame() {

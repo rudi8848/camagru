@@ -95,7 +95,8 @@ try {
 (3, '/views/styles/frames/hair1.png', ''),
 (4, '/views/styles/frames/hair2.png', ''),
 (5, '/views/styles/frames/hat.png', ''),
-(6, '/views/styles/frames/veapon.png', '')");
+(6, '/views/styles/frames/veapon.png', ''),
+(7, '/views/styles/frames/film.png', '')");
 
 	$db->exec("CREATE TABLE IF NOT EXISTS `categories`
 		(`category_id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,

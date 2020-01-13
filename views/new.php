@@ -5,7 +5,7 @@
   TEMPORARY CODE
   AFTER CREATION REDIRECT TO GALLERY/POST/ID
 -->
-<h1>Post creation</h1>
+<!--<h1>Post creation</h1>-->
 <!--<a href="/new">Add new post</a><hr>-->
 
 <div id="error" style="display: none"></div>
@@ -19,23 +19,30 @@
   <p><?=$data['description']?></p>
 
 <?php else: ?>
-    <aside>
+
+
+
+<div align="center">
+    <div class="frames-container" >
         <?php foreach($data['frames'] as $frame) :?>
+        <div class="frame-item">
             <label for="frame-<?=$frame['frame_id']?>">
                 <input type="checkbox" id="frame-<?=$frame['frame_id']?>" class="frames">
                 <img src="<?=$frame['path']?>" width="100px" id="image-frame-<?=$frame['frame_id']?>">
             </label>
+        </div>
         <?php endforeach;?>
-    </aside>
+    </div>
 
-  <button id="start">Turn on camera</button>
-  <button id="snap">Snap Photo</button>
-<div align="center">
 
+    <div class="buttons-container">
+        <button id="start">Turn on camera</button>
+        <button id="snap">Snap Photo</button>
+    </div>
 <!--    <div class="video-wrapper">-->
     <div class="parent-container">
         <div class="img-container">
-            <img src="/views/styles/frames/hair2.png" id="frame" style="display: none; position: absolute; bottom: 0px; left: 0px;" width="640" height="480" />
+            <img src="/views/styles/frames/explode.png" id="frame" style="display: none; position: absolute; bottom: 0px; left: 0px;" width="640" height="480" />
         </div>
         <div class="border-container">
             <div class="video-container">
@@ -47,18 +54,18 @@
 
 
 <!--    </div>-->
-    <div class="canvas-wrapper">
+    <div class="canvas-wrapper" width="640px">
         <canvas id="canvas">Your browser is not supported</canvas>
     </div>
-</div>
+
 <!--<img src="/views/styles/frames/hair2.png" id="frame" width="240">-->
 
-  <p>Add description</p>
-    <textarea name="description" id="description"></textarea>
+        <label for="description" class="input-title">Add a description</label><br/>
+            <textarea name="description" id="description"></textarea>
+        <br/>
 
-
-<button onclick="submit()">Upload</button>
-
+        <button onclick="submit()">Save</button>
+    </div>
 
 <?php endif ; ?>
 

@@ -1,4 +1,4 @@
-<p>page <?=$data['currentPage']?> of <?=$data['totalPages']?></p>
+<p class="pages">page <?=$data['currentPage']?> of <?=$data['totalPages']?></p>
     <div align="center">
         <div class="pagination">
             <?php
