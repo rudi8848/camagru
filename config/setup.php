@@ -89,6 +89,14 @@ try {
 		`description` VARCHAR(100) NULL)
 		ENGINE=InnoDB DEFAULT CHARSET=utf8");
 
+	$db->exec("INSERT IGNORE INTO `frames` VALUES 
+(1, '/views/styles/frames/explode.png', ''),
+(2, '/views/styles/frames/fire.png', ''),
+(3, '/views/styles/frames/hair1.png', ''),
+(4, '/views/styles/frames/hair2.png', ''),
+(5, '/views/styles/frames/hat.png', ''),
+(6, '/views/styles/frames/veapon.png', '')");
+
 	$db->exec("CREATE TABLE IF NOT EXISTS `categories`
 		(`category_id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 		`name` VARCHAR(100) NOT NULL UNIQUE)

@@ -10,6 +10,7 @@ document.getElementById('start').addEventListener('click',async(e) => {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({video: true});
         video.srcObject = stream;
+        document.getElementById('frame').style.display = 'block';
     }catch (e) {
         console.log(e);
         let errorMessage = document.getElementById('error');
@@ -35,6 +36,7 @@ document.getElementById('snap').addEventListener('click', function() {
     context.drawImage(video, 0, 0, WIDTH, HEIGHT);
     context.drawImage(document.getElementById('frame'),0,0);
 });
+
 
 
 /*document.getElementById('filterGray').addEventListener('change', function(){
@@ -85,6 +87,36 @@ async function submit() {
     let result = await response.json();
     let resultMessage = document.getElementById('success');
     resultMessage.innerText = result.result;
-    // console.log(result);
     resultMessage.style.display = 'block';
+}
+
+window.onload = function () {
+
+    const frames = document.getElementsByClassName('frames');
+
+    for (let i = 0; i < frames.length; ++i) {
+        frames[i].addEventListener('change', choseFrame, false);
+    }
+}
+
+function choseFrame() {
+    console.log(this.checked);
+    if (this.checked === true) {
+
+        const otherFrames = document.getElementsByClassName('frames');
+        for (let i = 0; i < otherFrames.length; ++i) {
+            if (otherFrames[i] !== this) {
+                otherFrames[i].checked = false;
+            }
+        }
+
+        const id = this.getAttribute('id');
+        const image = document.getElementById('image-' + id);
+        const source = image.getAttribute('src');
+        document.getElementById('frame').setAttribute('src', source);
+        document.getElementById('frame').style.display = 'block';
+
+    } else {
+        document.getElementById('frame').style.display = 'none';
+    }
 }

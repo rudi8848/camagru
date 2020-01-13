@@ -70,6 +70,17 @@ class Shot
     $db->exec($q);
   }
 
+  public static function getFrames()
+  {
+      $db = DB::getConnection();
+      $res = $db->query('SELECT * FROM frames', PDO::FETCH_ASSOC);
+
+      $likes = $res->fetchAll();
+
+      return $likes;
+
+  }
+
 }
 
 

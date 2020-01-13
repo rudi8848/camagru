@@ -6,23 +6,23 @@
 </div>
 <?php endif; ?>
 
-
-<form action="/signup" method="post">
-  <p>Name</p>
-  <input type="text" name="username" required value="<?=$data['name']?>">
-
-  <p>Email</p>
-  <input type="text" name="email" value="<?=$data['email']?>" required>
-
-  <p>Password</p>
-  <input type="password" name="password1" required>
-
-  <p>Repeat password</p>
-  <input type="password" name="password2" required>
-
-  <br/>
-  <button type="submit">Submit</button>
-</form>
-
-
+<div align="center">
+    <div class="login-form">
+        <form action="/signup" method="post">
+            <span class="input-title"><label for="username">Name</label></span>
+            <input type="text" name="username" id="username" required value="<?=$data['name']?>">
+            <br/>
+            <span class="input-title"><label for="email">Email</label></span>
+            <input type="text" name="email" id="email" value="<?=$data['email']?>" required>
+            <br/>
+            <span class="input-title"><label for="password1">Password</label></span>
+            <input type="password" name="password1" id="password1" required>
+            <br/>
+            <span class="input-title"><label for="password2">Repeat password</label></span>
+            <input type="password" name="password2" required>
+            <br/>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
 <?php require_once('footer.php') ?>

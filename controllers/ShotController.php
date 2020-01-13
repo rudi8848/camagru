@@ -19,6 +19,7 @@ class ShotController
               echo json_encode(['result' => 'Post added successfully!']);
               exit;
           }
+          $data['frames'] = Shot::getFrames();
 
       } catch (Exception $e) {
 

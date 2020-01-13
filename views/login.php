@@ -1,22 +1,26 @@
 <?php require_once('header.php');?>
 
-<form action="/login" method="post">
+<div align="center">
+    <div class="login-form">
+        <form action="/login" method="post">
 
 
 
-    <?php if (!empty($data['error'])) : ?>
-    <div class="error">
-        <?=$data['error']?>
+            <?php if (!empty($data['error'])) : ?>
+            <div class="error">
+                <?=$data['error']?>
+            </div>
+            <?php endif; ?>
+        <span class="input-title"> <label for="name">Name</label></span>
+        <input type="text" id="name" name="login" value="<?=$data['name']?>" required>
+<br/>
+            <span class="input-title"><label for="password">Password</label></span>
+        <input type="password" id="password" name="password" required>
+        <br/>
+        <button type="submit">Login</button>
+        </form>
+
+        <a href="#">I forgot my password</a>
     </div>
-    <?php endif; ?>
-
-<input type="text" name="login" value="<?=$data['name']?>" required>
-
-<p>Password</p>
-<input type="password" name="password" required>
-
-<button type="submit">Login</button>
-</form>
-
-<a href="#">I forgot my password</a>
+</div>
 <?php require_once('footer.php');?>
