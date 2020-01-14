@@ -15,6 +15,7 @@ class DB
 		//try {
 			$db = new PDO($dsn, $user, $password);
 			$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$db->exec("SET NAMES UTF8");
 			return $db;
 		//}
 		//catch()

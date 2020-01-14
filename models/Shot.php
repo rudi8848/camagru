@@ -14,18 +14,22 @@ class Shot
   function __construct($image)
   {
 
-    $this->name = $image['name'];
-    $this->tmpName = $image['tmp_name'];
-    $this->path = '/uploads/'.$this->getFilename();
-    $this->fullpath = ROOT.$this->path;
+    try {
+      $this->name = $image['name'];
+      $this->tmpName = $image['tmp_name'];
+      $this->path = '/uploads/' . $this->getFilename();
+      $this->fullpath = ROOT . $this->path;
 
-    if (!empty($_POST['description'])) {
-      $this->description = strip_tags($_POST['description']);
+      if (!empty($_POST['description'])) {
+        $this->description = htmlspecialchars(trim($_POST['description']));
+      }
+
+
+      $this->makeMagic();
+      $this->saveToDatabase();
+    } catch (Exception $e) {
+      throw $e;
     }
-
-
-    $this->makeMagic();
-    $this->saveToDatabase();
   }
 
   private function getFilename() {
@@ -55,7 +59,8 @@ class Shot
 
   private function saveToDatabase()
   {
-    $dir = dirname($this->fullpath);
+    try {
+      $dir = dirname($this->fullpath);
 //    echo $dir;exit;
 
       if (!file_exists($dir)) {
@@ -63,11 +68,19 @@ class Shot
       }
       move_uploaded_file($this->tmpName, $this->fullpath);
 
-    $db = DB::getConnection();
-    $q = 'INSERT INTO posts (image_path, author, description)
-            VALUES ("'.$this->path.'", "'.$_SESSION['user']['id'].'", "'.$this->description.'")';
+      $db = DB::getConnection();
+      $params = [
+          'path' => $this->path,
+          'author' => (int)$_SESSION['user']['id'],
+          'description' => $this->description
+      ];
+      $q = $db->prepare('INSERT INTO posts (image_path, author, description)
+            VALUES (:path, :author, :description)');
 
-    $db->exec($q);
+      $q->execute($params);
+    } catch (Exception $e) {
+      throw $e;
+    }
   }
 
   public static function getFrames()

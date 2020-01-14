@@ -14,7 +14,7 @@ class Gallery
 
 	public static function getPicturesList(int $page, int $userId = 0)
 	{
-//var_dump([$page, $userId]);
+
 		$db = DB::getConnection();
 
 		$picturesList = [];
@@ -83,9 +83,13 @@ class Gallery
             $likes = $result->fetchColumn();
 
             if ($likes == '0'){
-                // set like in db
-                $q = 'INSERT INTO likes (to_post, author) VALUES ("'.$postId.'", "'.(int)$_SESSION['user']['id'].'")';
-                $db->exec($q);
+
+                $params = [
+                    'post' => $postId,
+                    'author' => (int)$_SESSION['user']['id']
+                ];
+                $q = $db->prepare('INSERT INTO likes (to_post, author) VALUES (:post, :author)');
+                $q->execute($params);
 
                 echo json_encode(['inserted' => '1']);
                 exit;
@@ -134,7 +138,15 @@ class Gallery
 
             $date = new DateTime('now');
 
-            $db->exec('INSERT INTO comments (to_post, content, author) VALUES ("'.$data['post'].'", "'.$data['content'].'", "'.(int)$_SESSION['user']['id'].'" )');
+
+            $query = $db->prepare('INSERT INTO comments (to_post, content, author) VALUES (:post, :content, :id)');
+            $params = [
+                'post' => htmlspecialchars(trim($data['post'])),
+                'content' => htmlspecialchars(trim($data['content'])),
+                'id' => (int)$_SESSION['user']['id']
+            ];
+            $query->execute($params);
+
             echo json_encode(['content' => $data['content'],
                 'author' => $_SESSION['user']['name'],
                 'pic' => $_SESSION['user']['pic'],

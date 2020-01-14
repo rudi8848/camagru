@@ -84,7 +84,7 @@ class GalleryController
     {
         if (!empty($_POST)) {
 
-            $data['content'] = strip_tags($_POST['comment']);
+            $data['content'] = $_POST['comment'];
 
             $data['post'] = (int)$_POST['post'];
 
