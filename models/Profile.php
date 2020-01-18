@@ -38,11 +38,13 @@ class Profile
           mail(
             $email,
             'Camagru registration',
-            'Hello '.$name.'! Thanks for registration at '.getenv('SERVER_NAME').'. To complete registration please follow the link: '.
-            getenv('SERVER_NAME').'/confirmation/'.$token,
+            '<p>Hello '.$name.'!<br/>
+                        Thanks for registration at <a href="'.getenv('SERVER_NAME').'">Camagru</a>. <br/>To complete registration please follow <a href="'.
+            getenv('SERVER_NAME').'/confirmation/'.$token.'">this link</a></p>',
             join("\r\n", [
               "From: $adminEmail",
               "Reply-To: $adminEmail",
+              "Content-type: text/html",
               "X-Mailer: PHP/".phpversion()
             ])
           );
@@ -60,10 +62,16 @@ class Profile
 
   public static function login()
   {
+
+    if (isset($_SESSION['user']['id'])) throw new Exception('You have an active session');
+
     if (!empty($_POST)) {
 
-      $name = strip_tags($_POST['login']);
-      $password = md5($_POST['password']);
+        if (empty(trim($_POST['login']))) throw new Exception('Empty login');
+        if (empty(trim($_POST['password']))) throw new Exception('Empty password');
+
+      $name = htmlspecialchars(trim($_POST['login']));
+      $password = password_hash(trim($_POST['password']), PASSWORD_DEFAULT);
 
 
       $db = DB::getConnection();
@@ -74,7 +82,7 @@ class Profile
       if (empty($users)) throw new Exception('No such user');
       $user = $users[0];
 
-      if ($user['password'] !== $password) {
+      if (password_verify($user['password'], $password)) {
 
         throw new Exception('Wrong password');
 
@@ -134,6 +142,101 @@ class Profile
           throw $e;
       }
       return true;
+  }
+
+  public static function resetPassword(string $email)
+  {
+      try {
+
+          $db = DB::getConnection();
+
+          $adminEmail = getenv('ADMIN_EMAIL');
+
+          $selector = bin2hex(random_bytes(8));
+          $token = random_bytes(32);
+
+          $url = getenv('SERVER_NAME').'/create-new-password/'.$selector.'/'.bin2hex($token);
+          $expires = new DateTime('now');
+          $expires->setTimezone(new DateTimeZone('Europe/Kiev'));
+          $expires->modify('+ 1 hour');
+          $exp = $expires->format('d.m.Y H:i');
+
+          $res = $db->prepare('SELECT * FROM users WHERE email=:email');
+          $res->execute(['email' => $email]);
+
+          $users = $res->fetchAll(PDO::FETCH_ASSOC);
+          if (count($users) != 1) throw  new Exception('Error getting users');
+
+          $user = $users[0];
+
+          $name = $user['username'];
+
+          $q = $db->prepare('DELETE FROM password_reset WHERE email=:email');
+          $q->execute(['email' => $email]);
+
+
+          $row = $db->prepare('INSERT INTO password_reset (email, selector, token, expires) 
+                                VALUES (:email, :selector, :token, :expires)');
+          $row->execute(['email' => $email,
+              'selector' => $selector,
+              'token' => password_hash($token, PASSWORD_DEFAULT),
+              'expires' => $expires->format('Y-m-d H:i:s')]);
+
+          mail(
+              $email,
+              'Camagru password recovery',
+              "<p>Hello $name!</p>
+                        <p>To recover your password please follow <a href='$url'>this link</a>!<br/>
+                        The link will be active till $exp</p>",
+              join("\r\n", [
+                  "From: $adminEmail",
+                  "Reply-To: $adminEmail",
+                  "Content-type: text/html",
+                  "X-Mailer: PHP/".phpversion()
+              ])
+          );
+
+      } catch (Exception $e) {
+            throw $e;
+      }
+  }
+
+  public static function setNewPassword(string $selector, string $token, string $password)
+  {
+      try {
+
+          $db = DB::getConnection();
+
+          $q = $db->prepare("SELECT * FROM password_reset WHERE selector=:selector");
+          $q->execute([
+              'selector' => $selector
+          ]);
+          $res = $q->fetchAll(PDO::FETCH_ASSOC);
+
+          $row = $res[0];
+
+          $tokenBin = hex2bin($token);
+
+          if (password_verify($tokenBin, $row['token']) == false) throw new Exception('Password recovery error');
+
+          $exp = new DateTime($row['expires']);
+          $now = new DateTime('now');
+          $now->setTimezone(new DateTimeZone('Europe/Kiev'));
+          if ($exp < $now) throw new Exception('The link is expired');
+
+          $q = $db->query("SELECT * FROM users WHERE email='{$row['email']}'");
+          $user = $q->fetchAll(PDO::FETCH_ASSOC);
+
+          $q = $db->prepare('UPDATE users SET password=:password WHERE user_id=:userId');
+          $q->execute([
+              'password' => $password,
+              'userId' => $user[0]['user_id']
+          ]);
+          return ['success' => true, 'name' => $user[0]['username']];
+
+      } catch (Exception $e) {
+            throw $e;
+      }
   }
 
 }

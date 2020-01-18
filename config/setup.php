@@ -23,7 +23,7 @@ try {
 	$db->exec("CREATE TABLE IF NOT EXISTS `users`
 		(`user_id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 		`username` VARCHAR(20) NOT NULL UNIQUE,
-		`password` VARCHAR(100) NOT NULL,
+		`password` VARCHAR(255) NOT NULL,
 		`email` VARCHAR(100) NOT NULL UNIQUE,
 		`role` INT(11) NOT NULL DEFAULT 3,
 		`blocked` TINYINT(1) DEFAULT 0,
@@ -138,6 +138,12 @@ try {
 		`content` VARCHAR(255) NOT NULL,
 		`sent_at` DATETIME DEFAULT NOW())
 		ENGINE=InnoDB DEFAULT CHARSET=utf8");
+
+	$db->exec('CREATE TABLE IF NOT EXISTS password_reset
+		( `pr_id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY , 
+		`email` TEXT NOT NULL, `selector` TEXT NOT NULL, 
+		`token` LONGTEXT NOT NULL, 
+		`expires` DATETIME NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8');
 
 
 	} 

@@ -6,6 +6,11 @@
 </div>
 <?php endif; ?>
 
+<?php if (!empty($data['success'])): ?>
+<div class="success">
+    <?=$data['success']?>
+</div>
+<?php else: ?>
 <div align="center">
     <div class="login-form">
         <form action="/signup" method="post">
@@ -25,4 +30,5 @@
         </form>
     </div>
 </div>
+<?php endif;?>
 <?php require_once('footer.php') ?>

@@ -4,12 +4,10 @@
     <div class="login-form">
         <form action="/login" method="post">
 
-
-
             <?php if (!empty($data['error'])) : ?>
-            <div class="error">
-                <?=$data['error']?>
-            </div>
+                <div class="error">
+                    <?=$data['error']?>
+                </div>
             <?php endif; ?>
         <span class="input-title"> <label for="name">Name</label></span>
         <input type="text" id="name" name="login" value="<?=$data['name']?>" required>
@@ -20,7 +18,7 @@
         <button type="submit">Login</button>
         </form>
 
-        <a href="#">I forgot my password</a>
+        <a href="/reset-password">I forgot my password</a>
     </div>
 </div>
 <?php require_once('footer.php');?>

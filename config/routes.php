@@ -22,6 +22,8 @@ return [
     'logout' => 'login/logout',
     'signup' => 'login/signup',
     'confirmation/([0-9, a-f]+)' => 'login/confirm/$1',
+    'reset-password' => 'login/resetPassword',
+    'create-new-password/([0-9, a-f]+)/([0-9, a-f]+)' => 'login/newPassword/$1/$2',
 
     /*  shot controller */
 	'new' => 'shot/new'
