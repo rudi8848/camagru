@@ -46,10 +46,10 @@ class LoginController
 
             if (!empty($_POST)) {
                 //var_dump($_POST);exit;
-                $username = strip_tags($_POST['username']);
+                $username = htmlspecialchars(trim($_POST['username']));
                 $data['name'] = $username;
 
-                $email = $_POST['email'];
+                $email = htmlspecialchars(trim($_POST['email']));
 
                 if (!\Helper::validateEmail($email)) throw new Exception('Email is invalid');
                 $data['email'] = $email;
@@ -63,7 +63,7 @@ class LoginController
                 } else {
                     throw new Exception('Password is not confirmed');
                 }
-                $profile->signUp($username, $_POST['email'], $password);
+                $profile->signUp($username, $email, $password);
                 \Helper::redirect();
             }
 
@@ -76,6 +76,30 @@ class LoginController
 
             $view = new View();
             $view->render('signup.php', $data);
+        }
+        return true;
+    }
+
+    public static function actionConfirm(string $token)
+    {
+        $data = [];
+
+        $data['title'] = 'Email confirmation';
+        $data['name'] = '';
+        $data['email'] = '';
+
+        $token = strip_tags(htmlspecialchars($token));
+        try {
+
+            Profile::confirmEmail($token);
+
+        } catch (Exception $e) {
+            $data['error'] = 'Confirmation error';
+
+        } finally {
+
+            $view = new View();
+            $view->render('confirmEmail.php', $data);
         }
         return true;
     }

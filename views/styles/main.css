@@ -225,7 +225,7 @@ article {
 
 .pagination a:hover {
     background-color: #730927;
-    font-weight: bold;
+    text-decoration: underline;
 }
 
 .pagination > .current {

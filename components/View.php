@@ -3,7 +3,7 @@
 class View
 {
 
-    public function render($path, $data)
+    public function render(string $path, array $data)
     {
       $path = ROOT.'/views/'.$path;
         if (file_exists($path))

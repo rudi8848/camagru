@@ -24,20 +24,22 @@ class Profile
 
         if (empty($user)) {
 
-          $q = "INSERT INTO users (username, email, password) VALUES (:username, :email, :password)";
+          $token = bin2hex(random_bytes(20));
+          $q = "INSERT INTO users (username, email, password, token) VALUES (:username, :email, :password, :token)";
           $newUser = $db->prepare($q);
-          $newUser->execute(['username' => $name, 'email' => $email, 'password' => $password]);
+          $newUser->execute(['username' => $name, 'email' => $email, 'password' => $password, 'token' => $token]);
 
           $userId = $db->lastInsertId();
 //          echo 'Your id is '.$userId;
-          $_SESSION['user']['id'] = $userId;
-          $_SESSION['user']['name'] = $name;
-          $_SESSION['user']['pic'] = '';
+//          $_SESSION['user']['id'] = $userId;
+//          $_SESSION['user']['name'] = $name;
+//          $_SESSION['user']['pic'] = '';
 
           mail(
             $email,
             'Camagru registration',
-            'Hello '.$name.'! Thanks for registration at '.getenv('SERVER_NAME'),
+            'Hello '.$name.'! Thanks for registration at '.getenv('SERVER_NAME').'. To complete registration please follow the link: '.
+            getenv('SERVER_NAME').'/confirmation/'.$token,
             join("\r\n", [
               "From: $adminEmail",
               "Reply-To: $adminEmail",
@@ -76,6 +78,8 @@ class Profile
 
         throw new Exception('Wrong password');
 
+      }elseif($user['verified'] == 0){
+          throw new Exception('Please confirm your registration by following the link we sent to your email');
       } else {
 
         $_SESSION['user']['id'] = $user['user_id'];
@@ -102,6 +106,34 @@ class Profile
   public static function getUserPosts()
   {
 
+  }
+
+  public static function confirmEmail(string $token)
+  {
+      try{
+
+          $db = DB::getConnection();
+
+          $q = 'SELECT * FROM users WHERE token="'.$token.'"';
+          $res = $db->query($q, PDO::FETCH_ASSOC);
+
+          $user = $res->fetchAll();
+          if (count($user) == 1) {
+
+              $userId = $user[0]['user_id'];
+
+              $db->exec('UPDATE users SET token=NULL, verified=1 WHERE user_id='.$userId);
+
+          } else {
+
+              throw new Error("Token error");
+          }
+
+      }catch (Exception $e){
+
+          throw $e;
+      }
+      return true;
   }
 
 }

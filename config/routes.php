@@ -21,6 +21,7 @@ return [
 	'login' => 'login/login',		// actionSignIn in LoginController
     'logout' => 'login/logout',
     'signup' => 'login/signup',
+    'confirmation/([0-9, a-f]+)' => 'login/confirm/$1',
 
     /*  shot controller */
 	'new' => 'shot/new'
