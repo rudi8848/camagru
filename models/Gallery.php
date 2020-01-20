@@ -21,7 +21,7 @@ class Gallery
 
 		$result = $db->query('SELECT *
 			FROM posts 
-			JOIN users on posts.author=users.user_id '. ($userId > 0 ? " WHERE user_id = $userId " : "").
+			JOIN users on posts.author=users.user_id WHERE is_deleted = 0 '. ($userId > 0 ? " AND user_id = $userId " : "").
 			'ORDER BY created_at DESC LIMIT '.$page * self::POST_PER_PAGE.', '.self::POST_PER_PAGE);
 
 		while($row = $result->fetch(PDO::FETCH_ASSOC)) {
@@ -77,9 +77,10 @@ class Gallery
             if (empty($_SESSION['user']['id'])) throw new Exception('Not authorized');
             $db = DB::getConnection();
 
-            $q = 'SELECT COUNT(*) FROM likes WHERE to_post = "'.$postId.'" AND author = "'.(int)$_SESSION['user']['id'].'"';
+            $q = 'SELECT COUNT(*) FROM likes WHERE to_post = :postId AND author = :userId';
             $result = $db->prepare($q);
-            $result->execute();
+            $result->execute(['postId' => $postId,
+                'userId' => (int)$_SESSION['user']['id']]);
             $likes = $result->fetchColumn();
 
             if ($likes == '0'){
@@ -130,14 +131,13 @@ class Gallery
 
     public static function commentPost(array $data) : void
     {
-        if (empty($_SESSION['user']['id'])) throw new Exception('Not authorized');
-
-        $db = DB::getConnection();
-
         try {
 
-            $date = new DateTime('now');
+            if (empty($_SESSION['user']['id'])) throw new Exception('Not authorized');
 
+            $db = DB::getConnection();
+
+            $date = new DateTime('now');
 
             $query = $db->prepare('INSERT INTO comments (to_post, content, author) VALUES (:post, :content, :id)');
             $params = [
@@ -153,6 +153,32 @@ class Gallery
                 'id' => $_SESSION['user']['id'],
                 'date' => $date->format('d.m.Y H:i')]);
         } catch (Exception $e) {
+            echo json_encode(['error' => true, 'message' => $e->getMessage()]);
+        }
+    }
+
+
+    public static function  deletePost()
+    {
+
+        try {
+            if (empty($_POST['post'])) throw new Exception('No post specified');
+            if (empty($_SESSION['user']['id'])) throw new Exception('Not authorized');
+
+            $postId = (int)$_POST['post'];
+
+            $db = DB::getConnection();
+            $post = $db->query("SELECT * FROM posts where post_id=$postId", PDO::FETCH_ASSOC);
+            $postData = $post->fetch();
+            if (empty($postData)) throw new Exception("No such post");
+            if ($postData['author'] != $_SESSION['user']['id']) throw new Exception('Not authorized');
+
+            $res = $db->exec("UPDATE posts SET is_deleted=1, deleted_at=NOW(), deleted_by={$_SESSION['user']['id']} WHERE post_id=$postId");
+            if ($res == 1) {
+                echo json_encode(['error' => false, 'message' => 'success']);
+            }
+        } catch (Exception $e){
+
             echo json_encode(['error' => true, 'message' => $e->getMessage()]);
         }
     }

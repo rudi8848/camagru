@@ -3,10 +3,11 @@ body {
     line-height: normal;
     padding: 0;
     margin: 0;
+    background-color: rgba(245, 206, 197, .1);
 }
 
 main {
-    background-color: rgba(245, 206, 197, .1);
+    /*background-color: rgba(245, 206, 197, .1);*/
     margin: 0;
 }
 
@@ -312,7 +313,7 @@ button {
     border: 1px solid #730927;
     padding: 25px;
     border-radius: 2px;
-
+    background-color: #FFFFFF;
 }
 
 .login-form input {
@@ -332,6 +333,7 @@ button {
 
 
 #video {
+    transform: rotateY(180deg);
     /*background-image: url("/views/styles/frames/hair2.png");*/
     /*background-blend-mode: overlay;*/
 }
@@ -386,9 +388,11 @@ div.img-container {
 
 .frames-container {
     padding: 15px;
-    width: 80%;
+    width: 200px;
+    float: right;
     border: 2px solid #730927;
     border-radius: 2px;
+    background-color: #FFFFFF;
 }
 
 .frame-item {
@@ -405,4 +409,23 @@ div.img-container {
 
 .buttons-container {
     padding: 10px;
+}
+
+/*.delete-post {*/
+/*    position: absolute;*/
+/*    left: 75%;*/
+/*}*/
+
+button.post-deleter {
+    position: absolute;
+    left: 77%;
+    background-color: #FFFFFF;
+    border: 1px dotted rgba(0, 0, 0, .1);
+    color: #333333;
+    padding: 5px 10px;
+}
+
+button.post-deleter:hover {
+    background-color: #730927;
+    color: #FFFFFF;
 }

@@ -96,4 +96,14 @@ class GalleryController
         return true;
     }
 
+
+    public static function actionDeletePost()
+    {
+        if (!empty($_POST)) {
+
+            Gallery::deletePost();
+        }
+        return true;
+    }
+
 }

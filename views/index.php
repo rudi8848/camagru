@@ -6,6 +6,10 @@
 <?php foreach ($data['posts'] as $post): ?>
 
 <article>
+    <?php if (isset($_SESSION['user']['id']) && $post['user_id'] == $_SESSION['user']['id']): ?>
+<!--    <a href="#" title="delete" class="delete-post">X</a>-->
+    <button class="post-deleter" id="deleter-<?=$post['post_id']?>" onclick="deletePost(this)">X</button>
+    <?php endif;?>
     <p>
         <img src="<?=$post['pic']?>" width="100px" class="post-pic"><a class="post-author" href="/profile/<?=$post['user_id']?>"><?=$post['username']?></a>
         <br/>
@@ -47,3 +51,4 @@
 
 
 <script src="/views/getLikes.js"></script>
+<script src="/views/deletePost.js"></script>

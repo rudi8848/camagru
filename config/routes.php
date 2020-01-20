@@ -11,6 +11,7 @@ return [
     'post/setlike' => 'gallery/setLike',
 //    'posts/comments' => 'gallery/getPostsComments',
     'posts/comment' => 'gallery/commentPost',
+    'posts/delete' => 'gallery/deletePost',
 
     /*  profile controller  */
     'profile/([0-9])' => 'profile/user/$1',

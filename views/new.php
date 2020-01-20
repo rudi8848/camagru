@@ -21,18 +21,18 @@
 <?php else: ?>
 
 
-
-<div align="center">
-    <div class="frames-container" >
+    <aside class="frames-container" >
         <?php foreach($data['frames'] as $frame) :?>
-        <div class="frame-item">
-            <label for="frame-<?=$frame['frame_id']?>">
-                <input type="checkbox" id="frame-<?=$frame['frame_id']?>" class="frames">
-                <img src="<?=$frame['path']?>" width="100px" id="image-frame-<?=$frame['frame_id']?>">
-            </label>
-        </div>
+            <div class="frame-item">
+                <label for="frame-<?=$frame['frame_id']?>">
+                    <input type="checkbox" id="frame-<?=$frame['frame_id']?>" class="frames">
+                    <img src="<?=$frame['path']?>" width="100px" id="image-frame-<?=$frame['frame_id']?>">
+                </label>
+            </div>
         <?php endforeach;?>
-    </div>
+    </aside>
+<div align="center">
+
 
 
     <div class="buttons-container">
