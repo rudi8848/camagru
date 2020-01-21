@@ -41,7 +41,65 @@ class ProfileController
 
     public function actionSettings()
     {
-        echo __CLASS__.'::'.__METHOD__.'<br/>';
+        $data = [];
+        $data['title'] = 'Settings';
+
+        try {
+
+            if (empty($_SESSION['user']['id'])) throw new Exception('Session is not active');
+
+            $data['settings'] = Profile::getProfile((int)$_SESSION['user']['id']);
+        }
+        catch (Exception $e)
+        {
+            $data['error'] = $e->getMessage();
+
+        } finally {
+
+            $view = new View();
+            $view->render('settings.php', $data);
+        }
+
+        return true;
+    }
+
+    public function actionChangeName()
+    {
+        if (!empty($_POST)){
+
+        }
+        return true;
+    }
+
+    public function actionChangePicture()
+    {
+        if (!empty($_POST)){
+
+        }
+        return true;
+    }
+
+    public function actionChangeEmail()
+    {
+        if (!empty($_POST)){
+
+        }
+        return true;
+    }
+
+    public function actionChangePassword()
+    {
+        if (!empty($_POST)){
+
+        }
+        return true;
+    }
+
+    public function actionNotifications()
+    {
+        if (!empty($_POST)){
+
+        }
         return true;
     }
 }

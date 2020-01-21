@@ -45,6 +45,7 @@
     </div>
 </article>
 <?php endforeach?>
+    <div id="btnTop" hidden>Go up</div>
     <?php include 'pagination.php'?>
 </div>
 <?php require_once('footer.php');?>
@@ -52,3 +53,13 @@
 
 <script src="/views/getLikes.js"></script>
 <script src="/views/deletePost.js"></script>
+<script>
+
+    btnTop.onclick = function() {
+        window.scrollTo(pageXOffset, 0);
+    };
+
+    window.addEventListener('scroll', function() {
+        btnTop.hidden = (pageYOffset < document.documentElement.clientHeight);
+    });
+</script>

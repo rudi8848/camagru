@@ -8,7 +8,7 @@ async function deletePost(elem) {
     let formData = new FormData();
     formData.append('post', postId);
 
-    let response = await fetch('posts/delete', {
+    let response = await fetch('/post/delete', {
         method: 'POST',
         body: formData
     });

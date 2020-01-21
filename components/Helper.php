@@ -77,4 +77,22 @@ class Helper
 
         return $result;
     }
+
+    public static function sendEmail(string $email, string $subject, string $message)
+    {
+
+        $adminEmail = getenv('ADMIN_EMAIL');
+
+        mail(
+            $email,
+            $subject,
+            $message,
+            join("\r\n", [
+                "From: $adminEmail",
+                "Reply-To: $adminEmail",
+                "Content-type: text/html",
+                "X-Mailer: PHP/".phpversion()
+            ])
+        );
+    }
 }

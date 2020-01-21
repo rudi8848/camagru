@@ -1,15 +1,12 @@
 <?php
 
-/**
- *
- */
 class Profile
 {
 
   public static function signUp($name, $email, $password)
   {
       try {
-          $adminEmail = getenv('ADMIN_EMAIL');
+//          $adminEmail = getenv('ADMIN_EMAIL');
 
           $db = DB::getConnection();
 
@@ -30,24 +27,13 @@ class Profile
           $newUser->execute(['username' => $name, 'email' => $email, 'password' => $password, 'token' => $token]);
 
           $userId = $db->lastInsertId();
-//          echo 'Your id is '.$userId;
-//          $_SESSION['user']['id'] = $userId;
-//          $_SESSION['user']['name'] = $name;
-//          $_SESSION['user']['pic'] = '';
 
-          mail(
-            $email,
-            'Camagru registration',
-            '<p>Hello '.$name.'!<br/>
-                        Thanks for registration at <a href="'.getenv('SERVER_NAME').'">Camagru</a>. <br/>To complete registration please follow <a href="'.
-            getenv('SERVER_NAME').'/confirmation/'.$token.'">this link</a></p>',
-            join("\r\n", [
-              "From: $adminEmail",
-              "Reply-To: $adminEmail",
-              "Content-type: text/html",
-              "X-Mailer: PHP/".phpversion()
-            ])
-          );
+          $message = '<p>Hello '.$name.'!<br/>
+                      Thanks for registration at <a href="'.getenv('SERVER_NAME').'">Camagru</a>.
+                      <br/>To complete registration please follow <a href="'.
+                      getenv('SERVER_NAME').'/confirmation/'.$token.'">this link</a></p>';
+          Helper::sendEmail($email, 'Camagru registration', $message);
+
         } else {
 
             throw new Exception('This name is already in use. Please choose the another one.');
@@ -101,14 +87,19 @@ class Profile
 
   public static function getProfile(int $id)
   {
-      $db = DB::getConnection();
-      $q = 'SELECT * FROM users WHERE user_id="'.$id.'"';
-      $res = $db->query($q, PDO::FETCH_ASSOC);
+      try {
+          $db = DB::getConnection();
+          $q = 'SELECT * FROM users WHERE user_id="' . $id . '"';
+          $res = $db->query($q, PDO::FETCH_ASSOC);
 
-      $users = $res->fetchAll();
-      if (empty($users)) throw new Exception('No such user');
+          $user = $res->fetch();
+          if (empty($user)) throw new Exception('No such user');
 
-      return $users[0];
+          return $user;
+      } catch (Exception $e)
+      {
+          throw $e;
+      }
   }
 
   public static function getUserPosts()
@@ -182,23 +173,15 @@ class Profile
               'token' => password_hash($token, PASSWORD_DEFAULT),
               'expires' => $expires->format('Y-m-d H:i:s')]);
 
-          mail(
-              $email,
-              'Camagru password recovery',
-              "<p>Hello $name!</p>
-                        <p>To recover your password please follow <a href='$url'>this link</a>!<br/>
-                        The link will be active till $exp</p>",
-              join("\r\n", [
-                  "From: $adminEmail",
-                  "Reply-To: $adminEmail",
-                  "Content-type: text/html",
-                  "X-Mailer: PHP/".phpversion()
-              ])
-          );
+          $message = "<p>Hello $name!</p>
+                      <p>To recover your password please follow <a href='$url'>this link</a>!<br/>
+                      <small>The link will be active till $exp</small></p>";
+          Helper::sendEmail($email, 'Camagru password recovery', $message);
 
       } catch (Exception $e) {
             throw $e;
       }
+      return true;
   }
 
   public static function setNewPassword(string $selector, string $token, string $password)

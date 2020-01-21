@@ -74,7 +74,7 @@ class LoginController
                 }
                 $profile->signUp($username, $email, $password);
 //                \Helper::redirect();
-                $data['success'] = 'Registration is succesfull. Please confirm your registration by following the link we sent to your email';
+                $data['success'] = 'Registration is successful. Please confirm your registration by following the link we sent to your email';
 
             }
 
@@ -133,7 +133,10 @@ class LoginController
 
                 if (!\Helper::validateEmail($email)) throw new Exception('Email is invalid');
 
-                Profile::resetPassword($email);
+                $res = Profile::resetPassword($email);
+                if ($res == true){
+                    $data['success'] = "Email was successfully sent";
+                }
             }
 
         } catch (Exception $e) {

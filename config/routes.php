@@ -11,12 +11,17 @@ return [
     'post/setlike' => 'gallery/setLike',
 //    'posts/comments' => 'gallery/getPostsComments',
     'posts/comment' => 'gallery/commentPost',
-    'posts/delete' => 'gallery/deletePost',
+    'post/delete' => 'gallery/deletePost',
 
     /*  profile controller  */
     'profile/([0-9])' => 'profile/user/$1',
     'profile/([0-9])/page/([0-9]+)' => 'profile/user/$1/$2',
     'settings' => 'profile/settings',  // id from session
+    'change-name' => 'profile/changeName',
+    'change-picture' => 'profile/changePicture',
+    'change-email' => 'profile/changeEmail',
+    'change-password' => 'profile/changePassword',
+    'notifications' => 'profile/notifications',
 
     /*  login controller    */
 	'login' => 'login/login',		// actionSignIn in LoginController

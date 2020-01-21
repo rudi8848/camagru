@@ -21,10 +21,10 @@
             <input type="text" name="email" id="email" value="<?=$data['email']?>" required>
             <br/>
             <span class="input-title"><label for="password1">Password</label></span>
-            <input type="password" name="password1" id="password1" required>
+            <input type="password" name="password1" id="password1" required placeholder="Minimal length 6 characters">
             <br/>
             <span class="input-title"><label for="password2">Repeat password</label></span>
-            <input type="password" name="password2" required>
+            <input type="password" name="password2" required placeholder="Minimal length 6 characters">
             <br/>
             <button type="submit">Submit</button>
         </form>

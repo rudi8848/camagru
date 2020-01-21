@@ -21,8 +21,8 @@ class Gallery
 
 		$result = $db->query('SELECT *
 			FROM posts 
-			JOIN users on posts.author=users.user_id WHERE is_deleted = 0 '. ($userId > 0 ? " AND user_id = $userId " : "").
-			'ORDER BY created_at DESC LIMIT '.$page * self::POST_PER_PAGE.', '.self::POST_PER_PAGE);
+			JOIN users on posts.author=users.user_id WHERE posts.is_deleted = 0 '. ($userId > 0 ? " AND user_id = $userId " : "") .
+            ' ORDER BY created_at DESC LIMIT '.$page * self::POST_PER_PAGE.', '.self::POST_PER_PAGE);
 
 		while($row = $result->fetch(PDO::FETCH_ASSOC)) {
 			$picturesList [] = $row;
@@ -35,7 +35,7 @@ class Gallery
     {
         $db = DB::getConnection();
 
-        $q = 'SELECT COUNT(*)  FROM posts '.($userId > 0 ? " WHERE author = $userId " : "");
+        $q = 'SELECT COUNT(*)  FROM posts WHERE is_deleted=0'.($userId > 0 ? " AND author = $userId " : "");
         $result = $db->prepare($q);
         $result->execute();
         return  ceil((int)$result->fetchColumn() / self::POST_PER_PAGE);
@@ -116,7 +116,7 @@ class Gallery
 
         $q = 'SELECT users.username, users.pic, comments.* FROM comments 
                 JOIN users on users.user_id = comments.author  
-                WHERE to_post in ('.$ids.') AND is_deleted=0 order by created_at';
+                WHERE to_post in ('.$ids.')  order by created_at';
 
         $res = $db->query($q, PDO::FETCH_ASSOC);
         while($row = $res->fetch(PDO::FETCH_ASSOC)) {

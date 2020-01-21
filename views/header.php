@@ -18,7 +18,7 @@
                   <?php $menu = Helper::getMenu();?>
 
                   <?php foreach ($menu as $menuItem):?>
-                    <a href="<?=$menuItem['url']?>"><span class="menu-item>"><?=$menuItem['text']?></span></a>
+                    <a href="<?=$menuItem['url']?>"><?=$menuItem['text']?></a>
                   <?php endforeach;?>
 <!--                --><?php //if (empty($_SESSION['user']['id'])) : ?>
 <!--                    <a href="/login"><span class="menu-pic login-pic"></span>Login</a>-->
@@ -33,5 +33,6 @@
               </nav>
 
             </header>
+
             <main>
 

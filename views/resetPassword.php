@@ -7,6 +7,11 @@
             <?=$data['error']?>
         </div>
     <?php endif; ?>
+    <?php if (!empty($data['success'])):?>
+    <div class="success">
+        <?=$data['success']?>
+    </div>
+    <?php endif;?>
     <p>Please enter your email, we will send you further instructions</p>
 
 

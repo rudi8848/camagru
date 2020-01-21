@@ -72,7 +72,7 @@ async function submitComment(){
     formData.append('comment', msg);
     formData.append('post', postId);
 
-    let response = await fetch('posts/comment', {
+    let response = await fetch('/posts/comment', {
         method: 'POST',
         body: formData
     });
