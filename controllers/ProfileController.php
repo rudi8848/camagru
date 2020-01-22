@@ -65,41 +65,97 @@ class ProfileController
 
     public function actionChangeName()
     {
-        if (!empty($_POST)){
+        try {
+            if (!empty($_POST)) {
 
+                if (empty(trim($_POST['name']))) throw new Exception('Empty name');
+                Profile::changeUsername(htmlspecialchars(trim($_POST['name'])));
+                Helper::redirect('/settings');
+            }
+        }
+        catch (Exception $e){
+            echo $e->getMessage();
         }
         return true;
     }
 
     public function actionChangePicture()
     {
-        if (!empty($_POST)){
 
+        try {
+            if (!empty($_POST) && !empty($_FILES)) {
+
+//                var_dump($_FILES['image']);
+                $file = $_FILES['image'];
+                Profile::changeUserPicture($file);
+
+                Helper::redirect('/settings');
+            }
         }
+        catch (Exception $e){
+            echo $e->getMessage();
+        }
+
         return true;
     }
 
     public function actionChangeEmail()
     {
-        if (!empty($_POST)){
+        try {
+            if (!empty($_POST)) {
 
+                if (empty(trim($_POST['email']))) throw new Exception('Empty email');
+                Profile::changeEmail(htmlspecialchars(trim($_POST['email'])));
+                Helper::redirect('/settings');
+            }
+        }
+        catch (Exception $e){
+            echo $e->getMessage();
         }
         return true;
     }
 
     public function actionChangePassword()
     {
-        if (!empty($_POST)){
+        try{
 
+            if (!empty($_POST)){
+                if (empty(trim($_POST['oldPassword'])) ||
+                empty(trim($_POST['newPassword1'])) ||
+                empty(trim($_POST['newPassword2']))) throw new Exception('Empty password');
+
+             if (trim($_POST['newPassword1']) !== trim($_POST['newPassword2'])) throw new Exception('Password is not confirmed');
+             if (mb_strlen(trim($_POST['newPassword1'])) < 6) throw new Exception('Too short password');
+
+                $oldPassword = trim($_POST['oldPassword']);
+                $newPassword = password_hash(trim($_POST['newPassword1']), PASSWORD_DEFAULT);
+
+                Profile::changePassword($oldPassword, $newPassword);
+                Helper::redirect('/settings');
+            }
+        }
+        catch (Exception $e){
+            echo $e->getMessage();
         }
         return true;
     }
 
     public function actionNotifications()
     {
-        if (!empty($_POST)){
+        try {
+            if (!empty($_POST)) {
 
+                if (empty($_POST['notifications'])) throw new Exception('Notifications error');
+                $notifications = $_POST['notifications'] == 'true' ? 1 : 0;
+//                echo $notifications;
+                Profile::changeNotificationsSettings($notifications);
+                echo json_encode(['success' => true]);
+            }
         }
+        catch (Exception $e){
+            echo json_encode(['error' => true, 'message' => $e->getMessage()]);
+        }
+
         return true;
     }
 }

@@ -95,4 +95,13 @@ class Helper
             ])
         );
     }
+
+    public static function imageResize($imageSrc, $imageWidth, $imageHeight, $newImageWidth = 100, $newImageHeight=100)
+    {
+
+        $newImageLayer=imagecreatetruecolor($newImageWidth,$newImageHeight);
+        imagecopyresampled($newImageLayer,$imageSrc,0,0,0,0,$newImageWidth,$newImageHeight,$imageWidth,$imageHeight);
+
+        return $newImageLayer;
+    }
 }

@@ -106,7 +106,7 @@ window.onload = function () {
 }
 
 function choseFrame() {
-    console.log(this.checked);
+    // console.log(this.checked);
     if (this.checked === true) {
 
         const otherFrames = document.getElementsByClassName('frames');

@@ -1,8 +1,5 @@
 <?php
 
-/**
- *
- */
 class Shot
 {
   private $name;
@@ -15,6 +12,7 @@ class Shot
   {
 
     try {
+
       $this->name = $image['name'];
       $this->tmpName = $image['tmp_name'];
       $this->path = '/uploads/' . $this->getFilename();
@@ -42,6 +40,7 @@ class Shot
 
       $ext = $info->getExtension();
 
+      if (!in_array($ext, ['png', 'jpeg', 'jpg', 'gif'])) throw new Exception('Unsupported extension');
       return $name.'.'.$ext;
   }
 
@@ -55,13 +54,14 @@ class Shot
   {
 //      $im = imagecreatefromstring($this->tmpName);
 //      var_dump($im);
+//      $info = getimagesize($this->path);
+//      print_r($info);exit;
   }
 
   private function saveToDatabase()
   {
     try {
       $dir = dirname($this->fullpath);
-//    echo $dir;exit;
 
       if (!file_exists($dir)) {
         mkdir($dir, 0777, true);
@@ -85,12 +85,11 @@ class Shot
 
   public static function getFrames()
   {
+
       $db = DB::getConnection();
       $res = $db->query('SELECT * FROM frames', PDO::FETCH_ASSOC);
 
-      $likes = $res->fetchAll();
-
-      return $likes;
+      return $res->fetchAll();
 
   }
 

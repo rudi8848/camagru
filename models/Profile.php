@@ -57,7 +57,8 @@ class Profile
         if (empty(trim($_POST['password']))) throw new Exception('Empty password');
 
       $name = htmlspecialchars(trim($_POST['login']));
-      $password = password_hash(trim($_POST['password']), PASSWORD_DEFAULT);
+//      $password = password_hash(trim($_POST['password']), PASSWORD_DEFAULT);
+      $password = trim($_POST['password']);
 
 
       $db = DB::getConnection();
@@ -68,7 +69,7 @@ class Profile
       if (empty($users)) throw new Exception('No such user');
       $user = $users[0];
 
-      if (password_verify($user['password'], $password)) {
+      if (!password_verify($password, $user['password'])) {
 
         throw new Exception('Wrong password');
 
@@ -222,4 +223,139 @@ class Profile
       }
   }
 
+
+  public static function changeUserPicture(array $file)
+  {
+      if (empty($_SESSION['user']['id']))
+      if (filesize($file['tmp_name']) > 2 * 1024 * 1024) throw new Exception('File size is more than 2 mb');
+      $info = new SplFileInfo($file['name']);
+      $ext = $info->getExtension();
+      if (!in_array($ext, ['png', 'jpeg', 'jpg', 'gif'])) throw new Exception('Unsupported extension');
+
+      $sourceProperties = getimagesize($file['tmp_name']);
+
+      $dirPath = "/uploads/";
+
+      $hash = sha1_file($file['tmp_name']);
+      $newFileName = substr_replace($hash, '/', 2, 0);
+      $newFileName = substr_replace($newFileName, '/', 5, 0);
+
+      $imageType = $sourceProperties[2];
+
+      $fullName = $dirPath.$newFileName.'.'.$ext;
+      $dir = dirname(ROOT.$fullName);
+
+      if (!file_exists($dir)) {
+          mkdir($dir, 0777, true);
+      }
+
+      switch ($imageType) {
+
+          case IMAGETYPE_PNG:
+              $imageSrc = imagecreatefrompng($file['tmp_name']);
+              $tmp = Helper::imageResize($imageSrc,$sourceProperties[0],$sourceProperties[1]);
+//              imagepng($tmp,$dirPath. $newFileName. "_thump.". $ext);
+              imagepng($tmp, ROOT.$fullName);
+              break;
+
+          case IMAGETYPE_JPEG:
+              $imageSrc = imagecreatefromjpeg($file['tmp_name']);
+              $tmp = Helper::imageResize($imageSrc,$sourceProperties[0],$sourceProperties[1]);
+//              imagejpeg($tmp,$dirPath. $newFileName. "_thump.". $ext);
+              imagejpeg($tmp,ROOT.$fullName);
+              break;
+
+          case IMAGETYPE_GIF:
+              $imageSrc = imagecreatefromgif($file['tmp_name']);
+              $tmp = Helper::imageResize($imageSrc,$sourceProperties[0],$sourceProperties[1]);
+//              imagegif($tmp,$dirPath. $newFileName. "_thump.". $ext);
+              imagegif($tmp,ROOT.$fullName);
+              break;
+
+          default:
+              throw new Exception("Invalid Image type");
+              break;
+      }
+
+
+      $db = DB::getConnection();
+      $db->exec("UPDATE users SET pic='$fullName' WHERE user_id={$_SESSION['user']['id']}");
+      $_SESSION['user']['pic'] = $fullName;
+  }
+
+
+  public static function changeUsername(string $name)
+  {
+      try{
+
+          if (empty($_SESSION['user']['id'])) throw new Exception('Not authorized');
+
+          $db = DB::getConnection();
+          $q = $db->prepare('UPDATE users SET username=:username WHERE user_id=:id');
+          $q->execute([
+              'username' => $name,
+              'id' => (int)$_SESSION['user']['id']
+          ]);
+
+          $_SESSION['user']['name'] = $name;
+      }
+      catch (Exception $e) {
+          throw $e;
+      }
+  }
+
+  public static function changeEmail(string $email)
+  {
+      try{
+
+          if (empty($_SESSION['user']['id'])) throw new Exception('Not authorized');
+          if (!\Helper::validateEmail($email)) throw new Exception('Email is invalid');
+
+          $db = DB::getConnection();
+          $q = $db->prepare('UPDATE users SET email=:email WHERE user_id=:id');
+          $q->execute([
+              'email' => $email,
+              'id' => (int)$_SESSION['user']['id']
+          ]);
+      }
+      catch (Exception $e) {
+          throw $e;
+      }
+  }
+
+
+  public static function changePassword(string $oldPassword, string $newPassword)
+  {
+      try{
+
+          if (empty($_SESSION['user']['id'])) throw new Exception('Not authorized');
+          $db = DB::getConnection();
+
+          $q = "SELECT * FROM users WHERE user_id={$_SESSION['user']['id']}";
+          $res = $db->query($q, PDO::FETCH_ASSOC);
+
+          $user = $res->fetch();
+          if (empty($user)) throw new Exception('No such user');
+
+          if (!password_verify($oldPassword, $user['password'])) throw new Exception('Wrong password');
+
+          $db->exec("UPDATE users SET password='$newPassword' WHERE user_id={$_SESSION['user']['id']}");
+
+      } catch (Exception $e){
+            throw $e;
+      }
+  }
+
+
+  public static function changeNotificationsSettings(int $notifications)
+  {
+      try {
+          if (empty($_SESSION['user']['id'])) throw new Exception('Not authorized');
+          $db = DB::getConnection();
+          $db->exec("UPDATE users SET notifications='$notifications' WHERE user_id={$_SESSION['user']['id']}");
+      }
+      catch (Exception $e){
+          throw $e;
+      }
+  }
 }
