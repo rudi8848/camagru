@@ -37,7 +37,11 @@
 
     <div class="buttons-container">
         <button id="start">Turn on camera</button>
-        <button id="snap">Snap Photo</button>
+        <button id="snap" style="display: none">Snap Photo</button>
+        <form action="/new" method="post">
+            <input type="file" name="image">
+            <button type="submit">Load from file</button>
+        </form>
     </div>
 <!--    <div class="video-wrapper">-->
     <div class="parent-container">
@@ -64,7 +68,7 @@
             <textarea name="description" id="description"></textarea>
         <br/>
 
-        <button onclick="submit()">Save</button>
+        <button id="submit" onclick="submit()" style="display: none">Save</button>
     </div>
 
 <?php endif ; ?>

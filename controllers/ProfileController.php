@@ -46,7 +46,10 @@ class ProfileController
 
         try {
 
-            if (empty($_SESSION['user']['id'])) throw new Exception('Session is not active');
+            if (empty($_SESSION['user']['id'])){
+                Helper::redirect();
+            }
+
 
             $data['settings'] = Profile::getProfile((int)$_SESSION['user']['id']);
         }

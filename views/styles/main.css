@@ -351,7 +351,7 @@ button {
 
 
 #video {
-    transform: rotateY(180deg);
+    /*transform: rotateY(180deg);*/
     /*background-image: url("/views/styles/frames/hair2.png");*/
     /*background-blend-mode: overlay;*/
 }
@@ -395,6 +395,7 @@ div.img-container {
     /*bottom: 10px;*/
     /*left: 10px;*/
     z-index: 10;
+    /*transform: rotateY(180deg);*/
 }
 
 #description {
@@ -473,3 +474,11 @@ button.post-deleter:hover {
     background-color: #730927;
 }
 
+.settings-item a {
+    color: #730927;
+    text-decoration: none;
+}
+
+.settings-item a:hover {
+    text-decoration: underline;
+}
