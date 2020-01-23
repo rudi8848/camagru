@@ -141,11 +141,27 @@ class Gallery
 
             $query = $db->prepare('INSERT INTO comments (to_post, content, author) VALUES (:post, :content, :id)');
             $params = [
-                'post' => htmlspecialchars(trim($data['post'])),
+                'post' => (int)trim($data['post']),
                 'content' => htmlspecialchars(trim($data['content'])),
                 'id' => (int)$_SESSION['user']['id']
             ];
             $query->execute($params);
+
+            $post = $db->prepare("SELECT author FROM posts WHERE post_id = :post");
+            $post->execute(['post' => (int)trim($data['post'])]);
+            $authorId = $post->fetchColumn();
+
+            $authorInfo = $db->query("SELECT username, email, notifications FROM users WHERE user_id=$authorId");
+            $authorContacts = $authorInfo->fetch(PDO::FETCH_ASSOC);
+
+            if ($authorContacts['notifications'] == 1) {
+
+                $msg = "<p>Hello, {$authorContacts['username']}!</p>
+                <p>{$_SESSION['user']['name']} left new comment to your photo, <a href='".getenv('SERVER_NAME')."'>check it out!</a></p>
+                <q style='font-style: italic'>{$params['content']}</q>";
+
+                Helper::sendEmail($authorContacts['email'], "New comment", $msg);
+            }
 
             echo json_encode(['content' => $data['content'],
                 'author' => $_SESSION['user']['name'],
