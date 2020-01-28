@@ -37,6 +37,7 @@ canvas.height = HEIGHT;
 document.getElementById('snap').addEventListener('click', function() {
 
     context.drawImage(video, 0, 0, WIDTH, HEIGHT);
+    // backContext.drawImage(video, 0, 0, WIDTH, HEIGHT);
     context.drawImage(document.getElementById('frame'),0,0);
 
     document.getElementById('submit').style.display = "block";
@@ -100,3 +101,19 @@ function choseFrame() {
         document.getElementById('snap').style.display = 'none';
     }
 }
+
+
+let isVisible = false;
+
+document.getElementById('from-file').addEventListener('click', function () {
+
+    if (isVisible == false) {
+
+        document.getElementById('loading-form').style.display = "block";
+        isVisible = true;
+    }
+    else {
+        document.getElementById('loading-form').style.display = "none";
+        isVisible = false;
+    }
+})

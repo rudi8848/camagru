@@ -11,14 +11,14 @@
 <div id="error" style="display: none"></div>
 <div id="success" style="display: none"></div>
 
-<?php if (!empty($data['image'])) : ?>
-
-  <div class="image">
-    <img src="<?=$data['image']?>">
-  </div>
-  <p><?=$data['description']?></p>
-
-<?php else: ?>
+<?php //if (!empty($data['image'])) : ?>
+<!---->
+<!--  <div class="image">-->
+<!--    <img src="--><?//=$data['image']?><!--">-->
+<!--  </div>-->
+<!--  <p>--><?//=$data['description']?><!--</p>-->
+<!---->
+<?php //else: ?>
 
 
     <aside class="frames-container" >
@@ -38,9 +38,11 @@
     <div class="buttons-container">
         <button id="start">Turn on camera</button>
         <button id="snap" style="display: none">Snap Photo</button>
-        <form action="/new" method="post">
+        <button id="from-file" >Load from file</button>
+        <form action="/new" method="post" style="display: none" id="loading-form" enctype="multipart/form-data">
             <input type="file" name="image">
-            <button type="submit">Load from file</button>
+<!--            <input type="file" name="loadedImage">-->
+            <input type="submit" value="load">
         </form>
     </div>
 <!--    <div class="video-wrapper">-->
@@ -50,7 +52,11 @@
         </div>
         <div class="border-container">
             <div class="video-container">
+            <?php if(!empty($data['image'])):?>
+                <img src="<?=$data['image']?>" width="640">
+                <?php else:?>
                 <video id="video" width="640" height="480" autoplay>Your browser is not supported</video>
+                <?php endif;?>
             </div>
         </div>
     </div>
@@ -71,7 +77,7 @@
         <button id="submit" onclick="submit()" style="display: none">Save</button>
     </div>
 
-<?php endif ; ?>
+<?php //endif ; ?>
 
 
 

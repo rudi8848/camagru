@@ -226,7 +226,7 @@ class Profile
 
   public static function changeUserPicture(array $file)
   {
-      if (empty($_SESSION['user']['id']))
+      if (empty($_SESSION['user']['id'])) throw new Exception('Not authorized');
       if (filesize($file['tmp_name']) > 2 * 1024 * 1024) throw new Exception('File size is more than 2 mb');
       $info = new SplFileInfo($file['name']);
       $ext = $info->getExtension();
@@ -246,7 +246,7 @@ class Profile
       $dir = dirname(ROOT.$fullName);
 
       if (!file_exists($dir)) {
-          mkdir($dir, 0777, true);
+          mkdir($dir, 0755, true);
       }
 
       switch ($imageType) {
@@ -255,21 +255,21 @@ class Profile
               $imageSrc = imagecreatefrompng($file['tmp_name']);
               $tmp = Helper::imageResize($imageSrc,$sourceProperties[0],$sourceProperties[1]);
 //              imagepng($tmp,$dirPath. $newFileName. "_thump.". $ext);
-              imagepng($tmp, ROOT.$fullName);
+              imagepng($tmp, ROOT.$fullName, 90);
               break;
 
           case IMAGETYPE_JPEG:
               $imageSrc = imagecreatefromjpeg($file['tmp_name']);
               $tmp = Helper::imageResize($imageSrc,$sourceProperties[0],$sourceProperties[1]);
 //              imagejpeg($tmp,$dirPath. $newFileName. "_thump.". $ext);
-              imagejpeg($tmp,ROOT.$fullName);
+              imagejpeg($tmp,ROOT.$fullName, 90);
               break;
 
           case IMAGETYPE_GIF:
               $imageSrc = imagecreatefromgif($file['tmp_name']);
               $tmp = Helper::imageResize($imageSrc,$sourceProperties[0],$sourceProperties[1]);
 //              imagegif($tmp,$dirPath. $newFileName. "_thump.". $ext);
-              imagegif($tmp,ROOT.$fullName);
+              imagegif($tmp,ROOT.$fullName, 90);
               break;
 
           default:

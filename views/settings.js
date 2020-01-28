@@ -1,3 +1,5 @@
+"use strict";
+
 function changeName(event) {
 
     event.preventDefault();

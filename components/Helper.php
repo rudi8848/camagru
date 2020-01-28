@@ -96,12 +96,21 @@ class Helper
         );
     }
 
-    public static function imageResize($imageSrc, $imageWidth, $imageHeight, $newImageWidth = 100, $newImageHeight=100)
+    public static function imageResize($imageSrc, $imageWidth, $imageHeight, $maxsize = 100)
     {
+        if ($imageWidth > $imageHeight){
+            $newImageWidth = $maxsize;
+            $newImageHeight = round($newImageWidth * ($imageHeight / $imageWidth));
+        } elseif ($imageHeight > $imageWidth) {
+           $newImageHeight = $maxsize;
+           $newImageWidth = round($newImageHeight * ($imageWidth / $imageHeight));
+        } else {
+            $newImageWidth = $newImageHeight = $maxsize;
+        }
 
         $newImageLayer=imagecreatetruecolor($newImageWidth,$newImageHeight);
-        imagecopyresampled($newImageLayer,$imageSrc,0,0,0,0,$newImageWidth,$newImageHeight,$imageWidth,$imageHeight);
-
+        $res = imagecopyresampled($newImageLayer,$imageSrc,0,0,0,0,$newImageWidth,$newImageHeight,$imageWidth,$imageHeight);
+        if (res == false) throw new Exception('Resize error');
         return $newImageLayer;
     }
 }

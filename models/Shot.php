@@ -4,9 +4,11 @@ class Shot
 {
   private $name;
   private $tmpName;
+  private $redacted;
   private $path;
   private $fullpath;
   private $description;
+  private $ext;
 
   function __construct($image)
   {
@@ -38,10 +40,10 @@ class Shot
 
       $info = new SplFileInfo($this->name);
 
-      $ext = $info->getExtension();
+      $this->ext = $info->getExtension();
 
-      if (!in_array($ext, ['png', 'jpeg', 'jpg', 'gif'])) throw new Exception('Unsupported extension');
-      return $name.'.'.$ext;
+      if (!in_array($this->ext, ['png', 'jpeg', 'jpg', 'gif'])) throw new Exception('Unsupported extension');
+      return $name.'.'.$this->ext;
   }
 
 
@@ -52,21 +54,71 @@ class Shot
 
   private function makeMagic()
   {
-//      $im = imagecreatefromstring($this->tmpName);
-//      var_dump($im);
-//      $info = getimagesize($this->path);
-//      print_r($info);exit;
+
+      switch ($this->ext){
+        case 'png':
+          $srcIm = imagecreatefrompng($this->tmpName);
+          break;
+        case 'jpeg':
+        case 'jpg':
+        $srcIm = imagecreatefromjpeg($this->tmpName);
+          break;
+        case 'gif':
+          $srcIm = imagecreatefromgif($this->tmpName);
+          break;
+      }
+
+      list($width, $height) = getimagesize($this->tmpName);
+      if ($width > 2000 || $height > 2000) throw new Exception('Too large image');
+
+      if ($width > $height) {
+        $newWidth = 640;
+        $newHeight = round($newWidth * ($height / $width));
+      } else {
+        $newHeight = 480;
+        $newWidth = round($newHeight * ($width / $height));
+      }
+
+    $this->redacted = imagecreatetruecolor($newWidth, $newHeight);
+    $res = imagecopyresampled($this->redacted,$srcIm,0,0,0,0,$newWidth,$newHeight,$width,$height);
+
+    $frame = imagecreatefrompng('views/styles/frames/fire.png');
+    imagealphablending($frame, false);
+    imagesavealpha($frame, true);
+    imagecopy($this->redacted, $frame, 0, 0, 0, 0, $newWidth, $newHeight);
+
+    if ($res == false) throw new Exception('Image upload error');
+
+    $dir = dirname($this->fullpath);
+
+    if (!file_exists($dir)) {
+      mkdir($dir, 0755, true);
+    }
+
+    switch ($this->ext){
+      case 'png':
+        imagepng($this->redacted, $this->fullpath);
+        break;
+      case 'jpeg':
+      case 'jpg':
+        imagejpeg($this->redacted, $this->fullpath);
+        break;
+      case 'gif':
+        imagegif($this->redacted, $this->fullpath);
+        break;
+    }
   }
 
   private function saveToDatabase()
   {
     try {
-      $dir = dirname($this->fullpath);
-
-      if (!file_exists($dir)) {
-        mkdir($dir, 0777, true);
-      }
-      move_uploaded_file($this->tmpName, $this->fullpath);
+//      $dir = dirname($this->fullpath);
+//
+//      if (!file_exists($dir)) {
+//        mkdir($dir, 0755, true);
+//      }
+//      move_uploaded_file($this->tmpName, $this->fullpath);
+//      move_uploaded_file($this->redacted, $this->fullpath);
 
       $db = DB::getConnection();
       $params = [

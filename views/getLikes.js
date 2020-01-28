@@ -1,3 +1,5 @@
+"use strict";
+
 window.onload = function () {
 
     const posts = document.getElementsByClassName('post-likes');

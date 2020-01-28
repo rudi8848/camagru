@@ -89,7 +89,9 @@ class ProfileController
             if (!empty($_POST) && !empty($_FILES)) {
 
 //                var_dump($_FILES['image']);
+
                 $file = $_FILES['image'];
+                if (!is_uploaded_file($file['tmp_name'])) throw new Exception('File upload error');
                 Profile::changeUserPicture($file);
 
                 Helper::redirect('/settings');
