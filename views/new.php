@@ -82,5 +82,5 @@
 
 
 <?php require_once('footer.php');?>
-<script src="/views/new.js"></script>
+<script src="/views/js/new.js"></script>
 

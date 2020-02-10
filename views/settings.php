@@ -58,5 +58,5 @@
     </div>
 
 </article>
-<script src="/views/settings.js"></script>
+<script src="/views/js/settings.js"></script>
 <?php require_once 'footer.php'?>

@@ -51,8 +51,8 @@
 <?php require_once('footer.php');?>
 
 
-<script src="/views/getLikes.js"></script>
-<script src="/views/deletePost.js"></script>
+<script src="/views/js/getLikes.js"></script>
+<script src="/views/js/deletePost.js"></script>
 <script>
 
     btnTop.onclick = function() {
