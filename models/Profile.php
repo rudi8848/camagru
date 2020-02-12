@@ -372,12 +372,36 @@ class Profile
           $user = $res->fetch();
           if (empty($user)) throw new Exception('No such user');
 
-          if ($user['role'] == 1) throw new Exception('Try ')
-          $db->exec('UPDATE USERS');
+          if ($user['role'] == 1) throw new Exception('Attempt to block an admin');
+          $db->exec('UPDATE USERS SET blocked=1 WHERE user_id = '.$userId);
 
       } catch (Exception $e){
 
           throw $e;
       }
+      return true;
   }
+
+
+    public static function unblockUser(int $userId)
+    {
+        try {
+
+            $db = DB::getConnection();
+
+            $q = "SELECT * FROM users WHERE user_id=$userId";
+            $res = $db->query($q, PDO::FETCH_ASSOC);
+
+            $user = $res->fetch();
+            if (empty($user)) throw new Exception('No such user');
+
+            $db->exec('UPDATE USERS SET blocked=0 WHERE user_id = '.$userId);
+
+        } catch (Exception $e){
+
+            throw $e;
+        }
+
+        return true;
+    }
 }

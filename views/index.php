@@ -7,7 +7,7 @@
 
 <article>
     <?php if ($_SESSION['user']['role'] == 1) :?>
-    <a href="/block/<?=$post['user_id']?>">Block user</a>
+    <a href="<?php echo (int)$post['blocked'] == 1 ? "unblock" : "block";?>/<?=$post['user_id']?>"><?php echo (int)$post['blocked'] == 1 ? "unblock" : "block";?> user</a>
     <?php endif;?>
     <?php if ((isset($_SESSION['user']['id']) && $post['user_id'] == $_SESSION['user']['id']) || $_SESSION['user']['role'] == 1): ?>
 <!--    <a href="#" title="delete" class="delete-post">X</a>-->

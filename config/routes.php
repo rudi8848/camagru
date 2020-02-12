@@ -23,6 +23,7 @@ return [
     'change-password' => 'profile/changePassword',
     'notifications' => 'profile/notifications',
     'block/([0-9]+)' => 'profile/block/$1',
+    'unblock/([0-9]+)' => 'profile/unblock/$1',
 
     /*  login controller    */
 	'login' => 'login/login',		// actionSignIn in LoginController
