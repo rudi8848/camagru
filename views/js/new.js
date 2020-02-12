@@ -117,3 +117,37 @@ document.getElementById('from-file').addEventListener('click', function () {
         isVisible = false;
     }
 })
+
+
+
+document.getElementById('file').addEventListener('change', handleFileSelect, false)
+
+function handleFileSelect(evt) {
+
+//change to https://stackoverflow.com/questions/21227078/convert-base64-to-image-in-javascript-jquery
+    const file = evt.target.files; // FileList object
+    const f = file[0];
+
+    console.log(file);
+    console.log(f);
+
+
+    // Only process image files.
+    if (!f.type.match('image.*')) {
+        alert("Image only please....");
+    }
+    var reader = new FileReader();
+    // Closure to capture the file information.
+    reader.onload = (function(theFile) {
+        return function(e) {
+            // Render thumbnail.
+            const span = document.createElement('span');
+            console.log(theFile)
+            console.log(e)
+            span.innerHTML = ['<img class="thumb" title="', escape(theFile.name), '" src="', e.target.result, '" />'].join('');
+            document.getElementById('output').insertBefore(span, null);
+        };
+    })(f);
+    // Read in the image file as a data URL.
+    reader.readAsDataURL(f);
+}

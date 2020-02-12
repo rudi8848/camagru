@@ -80,6 +80,7 @@ class Profile
         $_SESSION['user']['id'] = $user['user_id'];
         $_SESSION['user']['name'] = $user['username'];
         $_SESSION['user']['pic'] = $user['pic'];
+        $_SESSION['user']['role'] = $user['role'];
       }
         return true;
     }
@@ -355,6 +356,27 @@ class Profile
           $db->exec("UPDATE users SET notifications='$notifications' WHERE user_id={$_SESSION['user']['id']}");
       }
       catch (Exception $e){
+          throw $e;
+      }
+  }
+
+  public static function blockUser(int $userId)
+  {
+      try {
+
+          $db = DB::getConnection();
+
+          $q = "SELECT * FROM users WHERE user_id=$userId";
+          $res = $db->query($q, PDO::FETCH_ASSOC);
+
+          $user = $res->fetch();
+          if (empty($user)) throw new Exception('No such user');
+
+          if ($user['role'] == 1) throw new Exception('Try ')
+          $db->exec('UPDATE USERS');
+
+      } catch (Exception $e){
+
           throw $e;
       }
   }

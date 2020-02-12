@@ -40,10 +40,13 @@
         <button id="snap" style="display: none">Snap Photo</button>
         <button id="from-file" >Load from file</button>
         <form action="/new" method="post" style="display: none" id="loading-form" enctype="multipart/form-data">
-            <input type="file" name="image">
+            <input type="file" name="image" id="file">
 <!--            <input type="file" name="loadedImage">-->
             <input type="submit" value="load">
         </form>
+        <div class="row">
+            <span id="output"></span>
+        </div>
     </div>
 <!--    <div class="video-wrapper">-->
     <div class="parent-container">

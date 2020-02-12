@@ -6,7 +6,10 @@
 <?php foreach ($data['posts'] as $post): ?>
 
 <article>
-    <?php if (isset($_SESSION['user']['id']) && $post['user_id'] == $_SESSION['user']['id']): ?>
+    <?php if ($_SESSION['user']['role'] == 1) :?>
+    <a href="/block/<?=$post['user_id']?>">Block user</a>
+    <?php endif;?>
+    <?php if ((isset($_SESSION['user']['id']) && $post['user_id'] == $_SESSION['user']['id']) || $_SESSION['user']['role'] == 1): ?>
 <!--    <a href="#" title="delete" class="delete-post">X</a>-->
     <button class="post-deleter" id="deleter-<?=$post['post_id']?>" onclick="deletePost(this)">X</button>
     <?php endif;?>

@@ -22,6 +22,7 @@ return [
     'change-email' => 'profile/changeEmail',
     'change-password' => 'profile/changePassword',
     'notifications' => 'profile/notifications',
+    'block/([0-9]+)' => 'profile/block/$1',
 
     /*  login controller    */
 	'login' => 'login/login',		// actionSignIn in LoginController

@@ -163,4 +163,18 @@ class ProfileController
 
         return true;
     }
+
+    public static function actionBlock(int $userId)
+    {
+        var_dump($userId);
+        try{
+
+            if ($_SESSION['user']['role'] != 1) throw new Exception('Not authorized');
+            Profile::blockUser($userId);
+        } catch (Exception $e){
+
+            echo $e->getMessage();
+        }
+        return true;
+    }
 }

@@ -187,7 +187,7 @@ class Gallery
             $post = $db->query("SELECT * FROM posts where post_id=$postId", PDO::FETCH_ASSOC);
             $postData = $post->fetch();
             if (empty($postData)) throw new Exception("No such post");
-            if ($postData['author'] != $_SESSION['user']['id']) throw new Exception('Not authorized');
+            if ($_SESSION['user']['role'] != 1 && $postData['author'] != $_SESSION['user']['id'] ) throw new Exception('Not authorized');
 
             $res = $db->exec("UPDATE posts SET is_deleted=1, deleted_at=NOW(), deleted_by={$_SESSION['user']['id']} WHERE post_id=$postId");
             if ($res == 1) {
