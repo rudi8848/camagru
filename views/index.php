@@ -7,7 +7,7 @@
 
 <article>
     <?php if ($_SESSION['user']['role'] == 1) :?>
-    <a href="<?php echo (int)$post['blocked'] == 1 ? "unblock" : "block";?>/<?=$post['user_id']?>"><?php echo (int)$post['blocked'] == 1 ? "unblock" : "block";?> user</a>
+    <button class="userblocker" onclick="<?php echo (int)$post['blocked'] == 1 ? "unblockUser" : "blockUser";?>(<?=$post['user_id']?>)"><?php echo (int)$post['blocked'] == 1 ? "unblock" : "block";?> user</button>
     <?php endif;?>
     <?php if ((isset($_SESSION['user']['id']) && $post['user_id'] == $_SESSION['user']['id']) || $_SESSION['user']['role'] == 1): ?>
 <!--    <a href="#" title="delete" class="delete-post">X</a>-->
@@ -65,4 +65,16 @@
     window.addEventListener('scroll', function() {
         btnTop.hidden = (pageYOffset < document.documentElement.clientHeight);
     });
+
+    async function blockUser(id) {
+            console.log("block "+id);
+
+            let resp = await fetch('block/'+id);
+
+    }
+
+    async function unblockUser(id) {
+        console.log("unblock "+id);
+        let resp = await fetch('unblock/' + id);
+    }
 </script>

@@ -191,4 +191,18 @@ class ProfileController
         }
         return true;
     }
+
+    public static function actionUsers()
+    {
+        try {
+
+            if (empty($_SESSION['user']['id']) || $_SESSION['user']['role'] != 1) throw new Exception("Not authorized");
+
+            $userIds = Profile::getAllUsers();
+            var_dump($userIds);
+        } catch (Exception $e){
+            echo $e->getMessage();
+            return true;
+        }
+    }
 }

@@ -24,6 +24,7 @@ return [
     'notifications' => 'profile/notifications',
     'block/([0-9]+)' => 'profile/block/$1',
     'unblock/([0-9]+)' => 'profile/unblock/$1',
+    'users' => 'profile/users',
 
     /*  login controller    */
 	'login' => 'login/login',		// actionSignIn in LoginController

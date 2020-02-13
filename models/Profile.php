@@ -404,4 +404,19 @@ class Profile
 
         return true;
     }
+
+    public static function getAllUsers() : array
+    {
+        try {
+            $db = Db::getConnection();
+
+            $res = $db->query("SELECT user_id, username, blocked, pic, verified from users", PDO::FETCH_ASSOC);
+            $users = $res->fetchAll();
+
+
+        }catch (Exception $e){
+            throw  $e;
+        }
+        return $users;
+    }
 }

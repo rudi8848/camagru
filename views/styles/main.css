@@ -482,3 +482,9 @@ button.post-deleter:hover {
 .settings-item a:hover {
     text-decoration: underline;
 }
+
+.userblocker {
+    float: right;
+    margin-right: 10%;
+    padding: 4px;
+}
