@@ -71,10 +71,17 @@ class GalleryController
 
     public function actionSetLike()
     {
-        if (!empty($_POST['json'])){
+        try {
+            if (empty($_SESSION['user']['id'])) throw new Exception('Not authorized');
+            if (!empty($_POST['json'])) {
 
-            $postId = (array)json_decode($_POST['json']);
-            \Gallery::setLike($postId['post']);
+                $postId = (array)json_decode($_POST['json']);
+                \Gallery::setLike($postId['post']);
+            }
+        } catch (Exception $e)
+        {
+            echo json_encode(['inserted' => '0']);
+            exit;
         }
         return true;
     }
@@ -82,16 +89,23 @@ class GalleryController
 
     public static function actionCommentPost()
     {
-        if (!empty($_POST)) {
+        try {
+            if (!empty($_POST)) {
 
-            $data['content'] = $_POST['comment'];
+                $data['content'] = $_POST['comment'];
 
-            $data['post'] = (int)$_POST['post'];
+                $data['post'] = (int)$_POST['post'];
 
-            if (empty($data['content']) || empty($data['post'])) {
-                return false;
+                if (empty($data['content']) || empty($data['post'])) {
+                    return false;
+                }
+
+                if (empty($_SESSION['user']['id'])) throw new Exception('Not authorized');
+                Gallery::commentPost($data);
             }
-            Gallery::commentPost($data);
+        }catch (Exception $e){
+
+            echo json_encode(['error' => true, 'message' => $e->getMessage()]);
         }
         return true;
     }
@@ -99,9 +113,16 @@ class GalleryController
 
     public static function actionDeletePost()
     {
-        if (!empty($_POST)) {
 
-            Gallery::deletePost();
+        try {
+            if (empty($_SESSION['user']['id'])) throw new Exception('Not authorized');
+            if (!empty($_POST)) {
+
+                Gallery::deletePost();
+            }
+        } catch (Exception $e) {
+
+            echo json_encode(['error' => true, 'message' => $e->getMessage()]);
         }
         return true;
     }

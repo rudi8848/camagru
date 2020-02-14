@@ -419,4 +419,28 @@ class Profile
         }
         return $users;
     }
+
+    public static function isValid(int $id = 0) : bool
+    {
+        try {
+            if ($id === 0) $id = (int)$_SESSION['user']['id'];
+
+            $db = DB::getConnection();
+
+            $q = "SELECT blocked, verified FROM users WHERE user_id = $id";
+            $res = $db->query($q, PDO::FETCH_ASSOC);
+
+            $user = $res->fetch();
+
+            if ($user['blocked'] == 0 && $user['verified'] == 1){
+
+                return true;
+            }
+            return false;
+
+        } catch (Exception $e)
+        {
+            throw $e;
+        }
+    }
 }

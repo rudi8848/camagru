@@ -74,7 +74,6 @@ class Gallery
     {
         try {
 
-            if (empty($_SESSION['user']['id'])) throw new Exception('Not authorized');
             $db = DB::getConnection();
 
             $q = 'SELECT COUNT(*) FROM likes WHERE to_post = :postId AND author = :userId';
@@ -100,8 +99,7 @@ class Gallery
             }
 
         } catch (Exception $e) {
-            echo json_encode(['inserted' => '0']);
-            exit;
+            throw $e;
         }
     }
 
@@ -133,7 +131,6 @@ class Gallery
     {
         try {
 
-            if (empty($_SESSION['user']['id'])) throw new Exception('Not authorized');
 
             $db = DB::getConnection();
 
@@ -169,7 +166,8 @@ class Gallery
                 'id' => $_SESSION['user']['id'],
                 'date' => $date->format('d.m.Y H:i')]);
         } catch (Exception $e) {
-            echo json_encode(['error' => true, 'message' => $e->getMessage()]);
+
+            throw $e;
         }
     }
 
@@ -179,7 +177,6 @@ class Gallery
 
         try {
             if (empty($_POST['post'])) throw new Exception('No post specified');
-            if (empty($_SESSION['user']['id'])) throw new Exception('Not authorized');
 
             $postId = (int)$_POST['post'];
 
@@ -195,7 +192,7 @@ class Gallery
             }
         } catch (Exception $e){
 
-            echo json_encode(['error' => true, 'message' => $e->getMessage()]);
+            throw  $e;
         }
     }
 
