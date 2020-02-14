@@ -56,6 +56,7 @@
 
 <script src="/views/js/getLikes.js"></script>
 <script src="/views/js/deletePost.js"></script>
+<script src="/views/js/users.js"></script>
 <script>
 
     btnTop.onclick = function() {
@@ -66,15 +67,4 @@
         btnTop.hidden = (pageYOffset < document.documentElement.clientHeight);
     });
 
-    async function blockUser(id) {
-            console.log("block "+id);
-
-            let resp = await fetch('block/'+id);
-
-    }
-
-    async function unblockUser(id) {
-        console.log("unblock "+id);
-        let resp = await fetch('unblock/' + id);
-    }
 </script>

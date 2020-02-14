@@ -194,15 +194,27 @@ class ProfileController
 
     public static function actionUsers()
     {
+
+        $data = [];
+
+        $data['title'] = "Users";
+
         try {
 
             if (empty($_SESSION['user']['id']) || $_SESSION['user']['role'] != 1) throw new Exception("Not authorized");
 
-            $userIds = Profile::getAllUsers();
-            var_dump($userIds);
+            $data['users'] = Profile::getAllUsers();
+//            var_dump($users);
+
         } catch (Exception $e){
-            echo $e->getMessage();
+
+            $data['error'] = $e->getMessage();
+
             return true;
+        } finally {
+            $view = new View();
+            $view->render('users.php', $data);
         }
+        return true;
     }
 }

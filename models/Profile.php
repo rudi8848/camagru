@@ -410,7 +410,7 @@ class Profile
         try {
             $db = Db::getConnection();
 
-            $res = $db->query("SELECT user_id, username, blocked, pic, verified from users", PDO::FETCH_ASSOC);
+            $res = $db->query("SELECT user_id, username, blocked, pic, verified, email from users", PDO::FETCH_ASSOC);
             $users = $res->fetchAll();
 
 
