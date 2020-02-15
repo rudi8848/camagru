@@ -9,7 +9,7 @@ class ShotController
       $data['title'] = 'New post';
       try {
 
-          if (empty($_SESSION['user']['id'])){
+          if (empty($_SESSION['user']['id']) ||  Profile::isValid() == false){
               Helper::redirect();
           }
 

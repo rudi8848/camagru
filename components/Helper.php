@@ -66,7 +66,7 @@ class Helper
 
         foreach ($menu as $key => $val) {
 
-            if (isset($_SESSION['user']['id']) && $val['visible'] == LOGGED) {
+            if (isset($_SESSION['user']['id']) && Profile::isValid() && $val['visible'] == LOGGED) {
                 $result [] = $val;
             } elseif (empty($_SESSION['user']['id']) && $val['visible'] == UNLOGGED) {
                 $result [] = $val;

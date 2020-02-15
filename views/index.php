@@ -7,7 +7,7 @@
 
 <article>
     <?php if ($_SESSION['user']['role'] == 1) :?>
-    <button class="userblocker" onclick="<?php echo (int)$post['blocked'] == 1 ? "unblockUser" : "blockUser";?>(<?=$post['user_id']?>)"><?php echo (int)$post['blocked'] == 1 ? "unblock" : "block";?> user</button>
+    <button class="userblocker" id="blocker-<?=$post['user_id']?>" onclick="<?php echo (int)$post['blocked'] == 1 ? "unblockUser" : "blockUser";?>(<?=$post['user_id']?>, this.id)"><?php echo (int)$post['blocked'] == 1 ? "unblock" : "block";?> user</button>
     <?php endif;?>
     <?php if ((isset($_SESSION['user']['id']) && $post['user_id'] == $_SESSION['user']['id']) || $_SESSION['user']['role'] == 1): ?>
 <!--    <a href="#" title="delete" class="delete-post">X</a>-->
@@ -24,7 +24,7 @@
     <p><img src="/views/styles/pic/thumb.svg" width="25px" class="like" onclick="setLike(<?=$post['post_id']?>)"> <span class="post-likes" id="<?php echo 'likes-'.$post['post_id']?>"></span></p>
 
     <div class="post-comments" id="<?php echo 'comments-'.$post['post_id']?>">
-        <?php if(isset($_SESSION['user']['id'])) : ?>
+        <?php if(isset($_SESSION['user']['id']) && Profile::isValid()) : ?>
         <div class="comment-new-container clearfix">
             <textarea class="comment-new" id="new-comment-<?=$post['post_id']?>"></textarea>
             <button class="submit-comment" id="submit-comment-<?=$_SESSION['user']['id']?>-<?=$post['post_id']?>">Comment</button>

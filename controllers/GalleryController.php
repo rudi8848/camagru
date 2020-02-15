@@ -100,7 +100,7 @@ class GalleryController
                     return false;
                 }
 
-                if (empty($_SESSION['user']['id'])) throw new Exception('Not authorized');
+                if (empty($_SESSION['user']['id']) || Profile::isValid() == false) throw new Exception('Not authorized');
                 Gallery::commentPost($data);
             }
         }catch (Exception $e){
@@ -115,7 +115,7 @@ class GalleryController
     {
 
         try {
-            if (empty($_SESSION['user']['id'])) throw new Exception('Not authorized');
+            if (empty($_SESSION['user']['id']) || Profile::isValid() == false) throw new Exception('Not authorized');
             if (!empty($_POST)) {
 
                 Gallery::deletePost();

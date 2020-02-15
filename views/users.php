@@ -9,7 +9,7 @@
     <img src="<?=$user['pic']?>" width="100px"><span><?=$user['username']?></span> <span><?=$user['email']?></span>
     <span><?php echo (int)$user['blocked'] == 1 ? "blocked" : "unblocked"?></span>
     <span><?php echo (int)$user['verified'] == 1 ? "verified" : "not verified"?></span>
-    <button onclick="<?php echo (int)$user['blocked'] == 1 ? "unblockUser" : "blockUser";?>(<?=$user['user_id']?>)"><?php echo (int)$user['blocked'] == 1 ? "unblock" : "block";?> user</button>
+    <button id="blocker-<?=$user['user_id']?>" onclick="<?php echo (int)$user['blocked'] == 1 ? "unblockUser" : "blockUser";?>(<?=$user['user_id']?>, this.id)"><?php echo (int)$user['blocked'] == 1 ? "unblock" : "block";?> user</button>
 
 </div>
 <?php endforeach;?>
