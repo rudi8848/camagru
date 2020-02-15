@@ -8,7 +8,16 @@
         <body>
             <header>
                 <?php if (!empty($_SESSION['user']['id'])) :?>
-                    <p class="username">Hello, <?=$_SESSION['user']['name']?> <a href="/profile/<?=$_SESSION['user']['id']?>">(view my profile)</a></p>
+                    <p class="username">Hello, <?=$_SESSION['user']['name']?>
+                        <?php if (Profile::isValid() == false) :?>
+                            (not active)
+                        <?php else: ?>
+                            <a href="/profile/<?=$_SESSION['user']['id']?>">(view my profile)</a>
+                        <?php endif; ?>
+                    <?php if ($_SESSION['user']['role'] == 1):?>
+                    <a href="/users">List all users</a>
+                    <?php endif; ?>
+                    </p>
                 <?php endif; ?>
                 <a href="/" id="to-the-main-page">
                     <img src="/views/styles/pic/fotic.png"  class="logo-img">

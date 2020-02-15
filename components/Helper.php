@@ -33,32 +33,38 @@ class Helper
             0 => [
                 'text' => 'Login',
                 'url' => '/login',
-                'visible' => UNLOGGED
+                'visible' => UNLOGGED,
+                'validOnly' => false
             ],
             1 => [
                 'text' => 'Sign Up',
                 'url' => '/signup',
-                'visible' => UNLOGGED
+                'visible' => UNLOGGED,
+                'validOnly' => false
             ],
             2 => [
                 'text' => 'Make new photo',
                 'url' => '/new',
-                'visible' => LOGGED
+                'visible' => LOGGED,
+                'validOnly' => true
             ],
             3 => [
                 'text' => 'Gallery',
                 'url' => '/gallery',
-                'visible' => BOTH
+                'visible' => BOTH,
+                'validOnly' => false
             ],
             4 => [
                 'text' => 'Settings',
                 'url' => '/settings',
-                'visible' => LOGGED
+                'visible' => LOGGED,
+                'validOnly' => false
             ],
             5 => [
                 'text' => 'Logout',
                 'url' => '/logout',
-                'visible' => LOGGED
+                'visible' => LOGGED,
+                'validOnly' => false
             ],
         ];
 
@@ -66,7 +72,10 @@ class Helper
 
         foreach ($menu as $key => $val) {
 
-            if (isset($_SESSION['user']['id']) && Profile::isValid() && $val['visible'] == LOGGED) {
+            if (isset($_SESSION['user']['id']) && $val['visible'] == LOGGED) {
+                if ($val['validOnly'] && Profile::isValid() == false) {
+                    continue;
+                }
                 $result [] = $val;
             } elseif (empty($_SESSION['user']['id']) && $val['visible'] == UNLOGGED) {
                 $result [] = $val;
@@ -74,6 +83,7 @@ class Helper
                 $result [] = $val;
             }
         }
+
 
         return $result;
     }
