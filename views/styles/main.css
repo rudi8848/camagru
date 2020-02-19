@@ -51,6 +51,7 @@ header, footer {
 
 .main-menu {
     font-weight: normal;
+
 }
 
 #btn-new {
@@ -196,7 +197,8 @@ article {
 .post-pic {
     display: inline;
     position: relative;
-    border-radius: 100%;
+    /*border-radius: 100%;*/
+    border-radius: 2px;
     /*top: -20px;*/
 }
 
@@ -228,6 +230,7 @@ article {
 
 .post-image img {
     width: 75%;
+    border-radius: 3px;
 }
 
 .pagination {

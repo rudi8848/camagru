@@ -42,24 +42,25 @@
         <form action="/new" method="post" style="display: none" id="loading-form" enctype="multipart/form-data">
             <input type="file" name="image" id="file">
 <!--            <input type="file" name="loadedImage">-->
-            <input type="submit" value="load">
+<!--            <input type="submit" value="load">-->
         </form>
-        <div class="row">
-            <span id="output"></span>
-        </div>
     </div>
+<!--        <div class="row">-->
+<!--            <span id="output"></span>-->
+<!--        </div>-->
+
 <!--    <div class="video-wrapper">-->
     <div class="parent-container">
         <div class="img-container">
             <img src="/views/styles/frames/explode.png" id="frame" style="display: none; position: absolute; bottom: 0px; left: 0px;" width="640" height="480" />
         </div>
         <div class="border-container">
-            <div class="video-container">
-            <?php if(!empty($data['image'])):?>
-                <img src="<?=$data['image']?>" width="640">
-                <?php else:?>
+            <div class="video-container" id="video-container">
+<!--            --><?php //if(!empty($data['image'])):?>
+<!--                <img src="--><?//=$data['image']?><!--" width="640">-->
+<!--                --><?php //else:?>
                 <video id="video" width="640" height="480" autoplay>Your browser is not supported</video>
-                <?php endif;?>
+<!--                --><?php //endif;?>
             </div>
         </div>
     </div>
@@ -85,5 +86,5 @@
 
 
 <?php require_once('footer.php');?>
-<script src="/views/js/new.js"></script>
+<script src="/views/js/new1.js"></script>
 

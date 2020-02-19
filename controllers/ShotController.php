@@ -12,7 +12,9 @@ class ShotController
           if (empty($_SESSION['user']['id']) ||  Profile::isValid() == false){
               Helper::redirect();
           }
-
+if (!empty($_POST)){//var_dump($_POST);
+echo json_encode(['img' => $_POST['image']]);exit;
+}
           if (!empty($_FILES['image'])) {
 
               if (!is_uploaded_file($_FILES['image']['tmp_name'])) throw new Exception('File upload error');

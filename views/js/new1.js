@@ -2,76 +2,47 @@
 const WIDTH = 640;
 const HEIGHT = 480;
 
-
-let video = document.getElementById('video');
-
-
+let photo = new Image();
+let oldImg;
 document.getElementById('start').addEventListener('click',async(e) => {
-    try {
 
-        const stream = await navigator.mediaDevices.getUserMedia({video: true});
-        video.srcObject = stream;
-        document.getElementById('snap').style.display = "inline-block";
-        document.getElementById('frame').style.display = 'block';
+try {
 
-    }catch (e) {
-        // console.log(e);
-        let errorMessage = document.getElementById('error');
-        errorMessage.innerText = `Failed getting image from camera: ${e.message}`;
-        errorMessage.style.display = 'block';
-    }
+    const video = document.getElementById('video')
+    const stream = await navigator.mediaDevices.getUserMedia({video: true});
+    video.srcObject = stream;
+    document.getElementById('snap').style.display = "inline-block";
+    document.getElementById('frame').style.display = 'block';
+
+}catch (e) {
+    // console.log(e);
+    let errorMessage = document.getElementById('error');
+    errorMessage.innerText = `Failed getting image from camera: ${e.message}`;
+    errorMessage.style.display = 'block';
+}
 });
-
-
-const canvas = document.getElementById('canvas');
-const context = canvas.getContext('2d');
-
-// const back = document.createElement('canvas');
-// const backContext = back.getContext('2d');
-
-let image = new Image();
-let chosenFrame;
-
-canvas.width = WIDTH;
-canvas.height = HEIGHT;
 
 document.getElementById('snap').addEventListener('click', function() {
 
-    context.drawImage(video, 0, 0, WIDTH, HEIGHT);
-    image.src = canvas.toDataURL();
-    // backContext.drawImage(video, 0, 0, WIDTH, HEIGHT);
-    context.drawImage(document.getElementById('frame'),0,0);
+    oldImg = photo;
+    photo = new Image();
+
+    let canvas = document.getElementById('canvas');
+    let context = canvas.getContext('2d');
+
+    canvas.width = WIDTH;
+    canvas.height = HEIGHT;
+
+    context.drawImage(oldImg, 0, 0, WIDTH, HEIGHT);
+    photo.src = canvas.toDataURL();
+
+    context.drawImage(document.getElementById('frame'), 0, 0);
 
     document.getElementById('submit').style.display = "block";
-    // console.log(image);
+
 });
 
-
-async function submit() {
-
-    // let imageBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-    let imageData = image.src;
-
-    let formData = new FormData();
-    formData.append('description', document.getElementById('description').value.trim());
-    formData.append('frame', chosenFrame);
-    formData.append('image', imageData);
-
-    let response = await fetch('/new', {
-        method: 'POST',
-        body: formData
-    });
-
-    let result = await response.json();
-    let resultMessage = document.getElementById('success');
-    resultMessage.innerText = result.result;
-    resultMessage.style.display = 'block';
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-    document.getElementById('description').value = '';
-}
+let chosenFrame;
 
 window.onload = function () {
 
@@ -109,6 +80,7 @@ function choseFrame() {
 }
 
 
+
 let isVisible = false;
 
 document.getElementById('from-file').addEventListener('click', function () {
@@ -125,17 +97,13 @@ document.getElementById('from-file').addEventListener('click', function () {
 })
 
 
-
 document.getElementById('file').addEventListener('change', handleFileSelect, false);
 
 function handleFileSelect(evt) {
 
-//change to https://stackoverflow.com/questions/21227078/convert-base64-to-image-in-javascript-jquery
     const file = evt.target.files; // FileList object
     const f = file[0];
 
-    // console.log(file);
-    // console.log(f);
 
 
     // Only process image files.
@@ -157,12 +125,49 @@ function handleFileSelect(evt) {
             // document.getElementById('output').insertBefore(span, null);
 
             document.getElementById('video-container').innerHTML = '<img width="640px" id="video" src="' + e.target.result+ '" />';
-            const img = new Image();
-            img.src = e.target.result;
-            img.onload = () => {context.drawImage(img, 0, 0, WIDTH, HEIGHT);}
+            photo = new Image();
+            photo.src = e.target.result;
 
+            let canvas = document.getElementById('canvas');
+            let context = canvas.getContext('2d');
+            canvas.width = WIDTH;
+            canvas.height = HEIGHT;
+            photo.onload = () => {context.drawImage(photo, 0, 0, WIDTH, HEIGHT);}
+
+            document.getElementById('snap').style.display = "inline-block";
+            document.getElementById('frame').style.display = 'block';
         };
     })(f);
     // Read in the image file as a data URL.
     reader.readAsDataURL(f);
+}
+
+
+async function submit() {
+
+    // let imageBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+    let imageData = oldImg.src;
+
+    let formData = new FormData();
+    formData.append('description', document.getElementById('description').value.trim());
+    formData.append('frame', chosenFrame);
+    formData.append('image', imageData);
+
+    let response = await fetch('/new', {
+        method: 'POST',
+        body: formData
+    });
+
+    let result = await response.json();
+
+    let resultMessage = document.getElementById('success');
+    // resultMessage.innerText = result.result;
+    resultMessage.innerHTML = '<img src="' + result.img + '">';
+    console.log(result);
+    resultMessage.style.display = 'block';
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+    document.getElementById('description').value = '';
 }

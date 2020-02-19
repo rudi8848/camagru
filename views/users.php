@@ -4,6 +4,7 @@
     <div class="error"?><?=$data['error']?></div>
 <?php endif;?>
 
+<?php if (!empty($data['users'])):?>
 <?php foreach ($data['users'] as $user):?>
 <div>
     <img src="<?=$user['pic']?>" width="100px"><span><?=$user['username']?></span> <span><?=$user['email']?></span>
@@ -13,6 +14,7 @@
 
 </div>
 <?php endforeach;?>
+<?php endif;?>
 
     <script src="/views/js/users.js"></script>
 <?php require_once 'footer.php';?>
