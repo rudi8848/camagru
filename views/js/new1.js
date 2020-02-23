@@ -4,6 +4,7 @@ const HEIGHT = 480;
 
 let photo = new Image();
 let oldImg;
+
 document.getElementById('start').addEventListener('click',async(e) => {
 
 try {
@@ -34,8 +35,8 @@ document.getElementById('snap').addEventListener('click', function() {
     canvas.height = HEIGHT;
 
     context.drawImage(oldImg, 0, 0, WIDTH, HEIGHT);
-    photo.src = canvas.toDataURL();
-
+    photo.src = canvas.toDataURL('image/png');
+console.log(photo.src);
     context.drawImage(document.getElementById('frame'), 0, 0);
 
     document.getElementById('submit').style.display = "block";
@@ -146,7 +147,8 @@ function handleFileSelect(evt) {
 async function submit() {
 
     // let imageBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-    let imageData = oldImg.src;
+    let imageData = oldImg.src.replace('data:image/png;base64,', '');
+    imageData = oldImg.src.replace('data:image/jpeg;base64,', '');
 
     let formData = new FormData();
     formData.append('description', document.getElementById('description').value.trim());
@@ -155,7 +157,10 @@ async function submit() {
 
     let response = await fetch('/new', {
         method: 'POST',
-        body: formData
+        body: formData,
+        // headers: {
+        //     'Content-Type': 'application/x-www-form-urlencoded'
+        // }
     });
 
     let result = await response.json();

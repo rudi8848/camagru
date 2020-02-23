@@ -22,6 +22,7 @@
 
 
     <aside class="frames-container" >
+        <?php if(!empty($data) && !empty($data['frames'])) :?>
         <?php foreach($data['frames'] as $frame) :?>
             <div class="frame-item">
                 <label for="frame-<?=$frame['frame_id']?>">
@@ -30,6 +31,7 @@
                 </label>
             </div>
         <?php endforeach;?>
+        <?php endif;?>
     </aside>
 <div align="center">
 

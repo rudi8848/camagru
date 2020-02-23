@@ -2,21 +2,44 @@
 
 class Shot
 {
-  private $name;
-  private $tmpName;
+//  private $name;
+//  private $tmpName;
   private $redacted;
   private $path;
   private $fullpath;
   private $description;
   private $ext;
+  private $mime;
+  private $resource;
+  private $frame;
+  private $imgSize;
+  private $srcStr;
+
+  const TYPE_MAP = [
+      'image/jpeg' => 'jpeg',
+      'image/png' => 'png',
+      'image/gif' => 'gif'
+  ];
+
+//1 які властивості є у ресурса,  2 якщо я передала вже готовий ресурс, як дізнатися розширення (!getimagesize[mime])
 
   function __construct($image)
   {
 
     try {
 
-      $this->name = $image['name'];
-      $this->tmpName = $image['tmp_name'];
+//      $this->name = $image['name'];
+      $this->srcStr = $image;
+      $bin = base64_decode($image);
+
+      $img = imagecreatefromstring($bin);//resource or false
+      $this->imgSize = getimagesizefromstring($bin);
+
+      if ($img == false || $this->imgSize == false) throw new Exception('Error: invalid image');
+      if (strlen($bin) > 2 * 1024 * 1024) throw new Exception('File size is more than 2 Mb');
+      $this->resource = $img;
+      $this->mime = $this->imgSize['mime'];
+//      $this->tmpName = $image['tmp_name'];
       $this->path = '/uploads/' . $this->getFilename();
       $this->fullpath = ROOT . $this->path;
 
@@ -24,6 +47,7 @@ class Shot
         $this->description = htmlspecialchars(trim($_POST['description']));
       }
 
+      $this->frame = $this->getFrameName();
 
       $this->makeMagic();
       $this->saveToDatabase();
@@ -33,14 +57,16 @@ class Shot
   }
 
   private function getFilename() {
-      $hash = sha1_file($this->tmpName);
+//      $hash = sha1_file($this->tmpName);
+      $hash = hash('sha256', $this->srcStr);
 
       $name = substr_replace($hash, '/', 2, 0);
       $name = substr_replace($name, '/', 5, 0);
 
-      $info = new SplFileInfo($this->name);
+//      $info = new SplFileInfo($this->name);
 
-      $this->ext = $info->getExtension();
+//      $this->ext = $info->getExtension();
+      $this->ext = $this->getExtension();
 
       if (!in_array($this->ext, ['png', 'jpeg', 'jpg', 'gif'])) throw new Exception('Unsupported extension');
       return $name.'.'.$this->ext;
@@ -55,20 +81,23 @@ class Shot
   private function makeMagic()
   {
 
-      switch ($this->ext){
-        case 'png':
-          $srcIm = imagecreatefrompng($this->tmpName);
-          break;
-        case 'jpeg':
-        case 'jpg':
-        $srcIm = imagecreatefromjpeg($this->tmpName);
-          break;
-        case 'gif':
-          $srcIm = imagecreatefromgif($this->tmpName);
-          break;
-      }
-
-      list($width, $height) = getimagesize($this->tmpName);
+//      switch ($this->ext){
+//        case 'png':
+//          $srcIm = imagecreatefrompng($this->tmpName);
+//          break;
+//        case 'jpeg':
+//        case 'jpg':
+//        $srcIm = imagecreatefromjpeg($this->tmpName);
+//          break;
+//        case 'gif':
+//          $srcIm = imagecreatefromgif($this->tmpName);
+//          break;
+//      }
+$srcIm = $this->resource;
+//      list($width, $height) = getimagesize($this->tmpName);
+//      list($width, $height) = getimagesizefromstring($this->resource);
+    $width = $this->imgSize[0];
+    $height = $this->imgSize[1];
       if ($width > 2000 || $height > 2000) throw new Exception('Too large image');
 
       if ($width > $height) {
@@ -82,7 +111,7 @@ class Shot
     $this->redacted = imagecreatetruecolor($newWidth, $newHeight);
     $res = imagecopyresampled($this->redacted,$srcIm,0,0,0,0,$newWidth,$newHeight,$width,$height);
 
-    $frame = imagecreatefrompng('views/styles/frames/fire.png');
+    $frame = imagecreatefrompng(ROOT.$this->frame);
     imagealphablending($frame, false);
     imagesavealpha($frame, true);
     imagecopy($this->redacted, $frame, 0, 0, 0, 0, $newWidth, $newHeight);
@@ -135,7 +164,7 @@ class Shot
     }
   }
 
-  public static function getFrames()
+  public static function getFrames() : array
   {
 
       $db = DB::getConnection();
@@ -143,6 +172,47 @@ class Shot
 
       return $res->fetchAll();
 
+  }
+
+  private  function getExtension(): string
+  {
+    $type = $this->mime;
+
+    if ($type == false) throw new Exception('Error: invalid image');
+
+    if (empty(self::TYPE_MAP[$this->mime])) throw new Exception('Error: image type not supported');
+
+    return self::TYPE_MAP[$this->mime];
+  }
+
+  private function getFrameName()
+  {
+    if (!empty($_POST['frame'])) {
+      $frameId = $_POST['frame'];
+
+      if (empty($frameId)) throw new Exception('Frame is not valid');
+
+      $pos = strrpos($frameId, '-');
+
+      $frameId = (int)substr($frameId, $pos + 1);
+
+      if ($frameId <= 0) throw new Exception('Frame is not valid');
+
+      $db = DB::getConnection();
+
+      $params = ['id' => $frameId];
+      $frames = $db->prepare('SELECT path FROM frames WHERE frame_id = :id');
+
+      $frames->execute($params);
+
+      $frame = $frames->fetch(PDO::FETCH_ASSOC);
+
+      if (empty($frame['path'])) throw new Exception('Frame is not valid');
+      print_r($frame);
+      return $frame['path'];
+    } else {
+      throw new Exception('No frame chosen');
+    }
   }
 
 }
