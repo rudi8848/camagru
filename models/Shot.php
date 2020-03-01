@@ -208,7 +208,7 @@ $srcIm = $this->resource;
       $frame = $frames->fetch(PDO::FETCH_ASSOC);
 
       if (empty($frame['path'])) throw new Exception('Frame is not valid');
-      print_r($frame);
+//      print_r($frame);
       return $frame['path'];
     } else {
       throw new Exception('No frame chosen');

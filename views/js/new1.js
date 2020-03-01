@@ -3,12 +3,15 @@ const WIDTH = 640;
 const HEIGHT = 480;
 
 let photo = new Image();
-let oldImg;
+let oldImg = new Image();
+
+let isFromCamera = false;
 
 document.getElementById('start').addEventListener('click',async(e) => {
 
 try {
 
+    isFromCamera = true;
     const video = document.getElementById('video')
     const stream = await navigator.mediaDevices.getUserMedia({video: true});
     video.srcObject = stream;
@@ -20,12 +23,13 @@ try {
     let errorMessage = document.getElementById('error');
     errorMessage.innerText = `Failed getting image from camera: ${e.message}`;
     errorMessage.style.display = 'block';
+    isFromCamera = false;
 }
 });
 
 document.getElementById('snap').addEventListener('click', function() {
 
-    oldImg = photo;
+    oldImg.src = photo.src;
     photo = new Image();
 
     let canvas = document.getElementById('canvas');
@@ -34,9 +38,14 @@ document.getElementById('snap').addEventListener('click', function() {
     canvas.width = WIDTH;
     canvas.height = HEIGHT;
 
-    context.drawImage(oldImg, 0, 0, WIDTH, HEIGHT);
+    if (isFromCamera == true) {
+        context.drawImage(video, 0, 0, WIDTH, HEIGHT);
+        oldImg.src = canvas.toDataURL('image/png');
+    } else {
+        context.drawImage(oldImg, 0, 0, WIDTH, HEIGHT);
+    }
     photo.src = canvas.toDataURL('image/png');
-console.log(photo.src);
+// console.log(photo.src);
     context.drawImage(document.getElementById('frame'), 0, 0);
 
     document.getElementById('submit').style.display = "block";
@@ -147,7 +156,8 @@ function handleFileSelect(evt) {
 async function submit() {
 
     // let imageBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-    let imageData = oldImg.src.replace('data:image/png;base64,', '');
+    let imageData;
+    imageData = oldImg.src.replace('data:image/png;base64,', '');
     imageData = oldImg.src.replace('data:image/jpeg;base64,', '');
 
     let formData = new FormData();
@@ -166,9 +176,9 @@ async function submit() {
     let result = await response.json();
 
     let resultMessage = document.getElementById('success');
-    // resultMessage.innerText = result.result;
-    resultMessage.innerHTML = '<img src="' + result.img + '">';
-    console.log(result);
+     resultMessage.innerText = result.result;
+    // resultMessage.innerHTML = '<img src="' + result.img + '">';
+    // console.log(result);
     resultMessage.style.display = 'block';
     window.scrollTo({
         top: 0,
