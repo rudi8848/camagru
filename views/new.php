@@ -84,7 +84,7 @@
     </div>
 
 <?php //endif ; ?>
-
+<div class="clearfix"></div>
 
 
 <?php require_once('footer.php');?>

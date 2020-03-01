@@ -233,6 +233,9 @@ class Profile
       $ext = $info->getExtension();
       if (!in_array($ext, ['png', 'jpeg', 'jpg', 'gif'])) throw new Exception('Unsupported extension');
 
+      if ($_SESSION['user']['pic'] !== '/views/styles/pic/default-user.png') {
+          unlink(ROOT.$_SESSION['user']['pic']);
+      }
       $sourceProperties = getimagesize($file['tmp_name']);
 
       $dirPath = "/uploads/";
