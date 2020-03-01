@@ -62,6 +62,7 @@ window.onload = function () {
         frames[i].addEventListener('change', choseFrame, false);
     }
     frames[0].checked = true;
+    chosenFrame = 'image-frame-1';
 }
 
 function choseFrame() {
@@ -156,9 +157,9 @@ function handleFileSelect(evt) {
 async function submit() {
 
     // let imageBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-    let imageData;
-    imageData = oldImg.src.replace('data:image/png;base64,', '');
-    imageData = oldImg.src.replace('data:image/jpeg;base64,', '');
+    let imageData = oldImg.src;
+    // imageData = oldImg.src.replace('data:image/png;base64,', '');
+    // imageData = oldImg.src.replace('data:image/jpeg;base64,', '');
 
     let formData = new FormData();
     formData.append('description', document.getElementById('description').value.trim());

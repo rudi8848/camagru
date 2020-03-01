@@ -15,6 +15,8 @@ class ShotController
           if (!empty($_POST)){//var_dump($_POST);exit;
                 $inp = str_replace(' ', '+', $_POST['image']);
                 $inp = str_replace('data:image/png;base64,', '', $inp);
+                $inp = str_replace('data:image/jpeg;base64,', '', $inp);
+                $inp = str_replace('data:image/gif;base64,', '', $inp);
 //var_dump($inp);exit;
                 $shot = new Shot($inp);
 
